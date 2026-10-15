@@ -1,0 +1,1598 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TELOS</title>
+<meta name="description" content="Launch a pump.fun coin and lock its creator fees to one job. Burn, Floor, Draw or Graduate.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@75..125,200..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&family=Instrument+Serif:ital@1&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%22-6%20-6%20212%20212%22%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%22106%22%20fill%3D%22%2308080A%22/%3E%3Cpath%20d%3D%22M107%2093L107%204.26A96%2096%200%200%201%20195.74%2093Z%22%20fill%3D%22%23FF4A1C%22%20transform%3D%22translate%28100%20100%29%20scale%28.78%29%20translate%28-100%20-100%29%22/%3E%3Cpath%20d%3D%22M107%20107L107%20195.74A96%2096%200%200%200%20195.74%20107Z%22%20fill%3D%22%23EDEBE5%22%20transform%3D%22translate%28100%20100%29%20scale%28.78%29%20translate%28-100%20-100%29%22/%3E%3Cpath%20d%3D%22M93%20107L93%20195.74A96%2096%200%200%201%204.26%20107Z%22%20fill%3D%22%23EDEBE5%22%20transform%3D%22translate%28100%20100%29%20scale%28.78%29%20translate%28-100%20-100%29%22/%3E%3Cpath%20d%3D%22M93%2093L93%204.26A96%2096%200%200%200%204.26%2093Z%22%20fill%3D%22%23EDEBE5%22%20transform%3D%22translate%28100%20100%29%20scale%28.78%29%20translate%28-100%20-100%29%22/%3E%3C/svg%3E">
+<style>
+/* Layout: one fixed WebGL stage behind everything. The hero is a poster (headline up top, the TEL◔S wordmark across the full width with a live 3D O).
+   Below it, text panels scroll down the left while the same particles re-form on the right for each step. Product pages sit on the same stage, dimmed. */
+:root{
+  --ink:#08080A; --ink-2:#0E0F12; --ink-3:#15161A; --ink-4:#1E2026;
+  --line:rgba(237,235,229,.08); --line-2:rgba(237,235,229,.14); --line-3:rgba(237,235,229,.26);
+  --bone:#EDEBE5; --soft:#C9C7C1; --mute:#9A9CA4; --dim:#63656E;
+  --signal:#FF4A1C; --ember:#FF8A4C; --signal-soft:rgba(255,74,28,.16);
+  --glass:rgba(13,14,17,.58); --glass-2:rgba(20,21,25,.72);
+  --plate:#E8E5DE; --plate-2:#DCD8CF; --plate-ink:#121316; --plate-mute:#6C6B68; --plate-line:rgba(18,19,22,.12);
+  --display:"Mona Sans","Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --body:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --wrap:1240px; --gut:clamp(16px,4vw,44px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--ink);scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--bone);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-inline:var(--gut);overflow-x:hidden}
+::selection{background:var(--signal);color:#fff}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+.wrap{max-width:var(--wrap);margin-inline:auto;position:relative}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.svgmark .acc{fill:var(--signal)}
+h1,h2,h3{font-family:var(--display);font-weight:300;letter-spacing:-.045em;line-height:.96;margin:0;text-wrap:balance}
+h1 em,h2 em{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.02em}
+p{margin:0}
+.kick{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);display:flex;align-items:center;gap:10px}
+.kick i{width:6px;height:6px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 3px var(--signal-soft),0 0 14px var(--signal)}
+.lead{font-size:clamp(16.5px,1.3vw,19px);color:var(--soft);text-shadow:0 1px 14px rgba(8,8,10,.9),0 0 2px rgba(8,8,10,.6);line-height:1.55;max-width:31em;text-wrap:pretty}
+.btn{position:relative;display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 22px;border-radius:999px;border:1px solid transparent;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;transition:transform .25s cubic-bezier(.2,.7,.2,1),background .25s,border-color .25s,box-shadow .25s}
+.btn:active{transform:scale(.97)}
+.btn-solid{background:var(--bone);color:var(--plate-ink);box-shadow:0 0 0 0 rgba(255,74,28,0)}
+.btn-solid:hover{background:#fff;box-shadow:0 8px 40px -8px rgba(255,120,60,.55)}
+.btn-ghost{border-color:var(--line-3);color:var(--bone);background:rgba(8,8,10,.25);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.btn-ghost:hover{border-color:var(--bone)}
+.btn .ar{transition:transform .25s}
+.btn:hover .ar{transform:translateX(3px)}
+.chip{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px;border-radius:999px;border:1px solid var(--line-2);font-family:var(--mono);font-size:11.5px;color:var(--mute);background:rgba(8,8,10,.3);white-space:nowrap}
+.tagx{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);border:1px dashed var(--line-3);border-radius:6px;padding:3px 8px;white-space:nowrap}
+
+/* ---------- stage ---------- */
+#gl{position:fixed;left:0;top:0;width:100%;height:100vh;height:100lvh;display:block;z-index:0;pointer-events:none;transition:opacity .8s}
+body.sub #gl{opacity:.42}
+@media (max-width:760px){body.sub #gl{opacity:.26}}
+.veil{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;background:linear-gradient(90deg,rgba(8,8,10,.86) 0%,rgba(8,8,10,.62) 30%,rgba(8,8,10,0) 52%)}
+.tags{position:fixed;inset:0;z-index:1;pointer-events:none}
+.t3{position:absolute;left:0;top:0;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);white-space:nowrap;opacity:0;will-change:transform,opacity}
+.t3 b{font-weight:500;color:var(--bone)}
+.t3 em{font-style:normal;color:var(--bone);font-size:13px;letter-spacing:.02em;text-transform:none}
+.t3 i{width:7px;height:7px;border-radius:2px;flex:none}
+.t3.box{padding:7px 11px;border:1px solid var(--line-2);border-radius:999px;background:rgba(8,8,10,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.t3.hot{color:var(--ember)} .t3.hot b{color:var(--signal)}
+main,footer{position:relative;z-index:2}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;margin-inline:calc(-1*var(--gut));padding:0 var(--gut);transition:background .3s,border-color .3s,backdrop-filter .3s;border-bottom:1px solid transparent}
+.top.on{background:rgba(8,8,10,.62);backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);border-bottom-color:var(--line)}
+.top .wrap{display:flex;align-items:center;gap:28px;height:68px}
+.brand{display:flex;align-items:center;color:var(--bone);text-decoration:none}
+.brand svg{height:16px;width:auto;display:block}
+.nav{display:flex;gap:2px;margin-left:14px}
+.nav a{font-size:14px;color:var(--mute);text-decoration:none;padding:8px 12px;border-radius:8px;transition:color .2s}
+.nav a:hover,.nav a[aria-current="page"]{color:var(--bone)}
+.top .rt{margin-left:auto;display:flex;align-items:center;gap:10px}
+.top .btn{height:40px;padding:0 18px;font-size:14px}
+.menu{display:none;width:40px;height:40px;border-radius:999px;border:1px solid var(--line-2);background:rgba(8,8,10,.4);align-items:center;justify-content:center}
+.menu span{display:block;width:14px;height:1.5px;background:var(--bone);box-shadow:0 5px 0 var(--bone),0 -5px 0 var(--bone)}
+.top .drawer{display:none}
+@media (max-width:860px){
+  .nav,.top .ca-chip{display:none}
+  .menu{display:inline-flex}
+  .top .drawer{display:block;padding:6px 0 16px}
+  .top .drawer a{display:block;padding:13px 0;font-size:18px;text-decoration:none;color:var(--bone);border-bottom:1px solid var(--line)}
+}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:calc(100svh - 68px);display:flex;flex-direction:column;justify-content:space-between;gap:clamp(36px,6vh,72px);padding-block:clamp(28px,6vh,72px) 22px}
+.hero-top{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:28px clamp(24px,4vw,72px);align-items:end;width:100%}
+.hero h1{font-size:clamp(46px,7vw,112px);margin-top:22px;letter-spacing:-.052em;line-height:.92}
+.hero h1 em{font-size:1.04em;line-height:.8}
+.hero-side{display:flex;flex-direction:column;gap:26px;padding-bottom:10px}
+.ctas{display:flex;flex-wrap:wrap;gap:10px}
+.hero-word{width:100%;margin-top:auto}
+.hero-word svg{display:block;width:100%;height:auto;color:var(--bone);overflow:visible}
+html.gl #oslot{opacity:0}
+.hero-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 28px;padding-top:18px;border-top:1px solid var(--line-2);width:100%}
+.route-strip{display:flex;flex-wrap:wrap;gap:8px 26px;font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.route-strip span{display:flex;align-items:center;gap:9px}
+.route-strip b{color:var(--bone);font-weight:500}
+.sw{width:8px;height:8px;border-radius:2px;display:inline-block;flex:none}
+.sw.k{background:var(--signal);box-shadow:0 0 10px var(--signal)} .sw.t{background:var(--bone)} .sw.p{background:#585B66}
+.cue{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);text-decoration:none}
+.cue span{position:relative;width:1px;height:28px;background:var(--line-2);overflow:hidden}
+.cue span::after{content:"";position:absolute;left:0;top:-40%;width:1px;height:40%;background:var(--bone);animation:drip 2.2s cubic-bezier(.6,0,.3,1) infinite}
+@keyframes drip{to{top:110%}}
+@media (max-width:760px){
+  .hero-top{position:relative}
+  .hero-top::before{content:"";position:absolute;inset:-40px calc(-1*var(--gut)) -30px;background:radial-gradient(120% 80% at 30% 50%,rgba(8,8,10,.78),rgba(8,8,10,.35) 60%,rgba(8,8,10,0) 80%);z-index:-1;pointer-events:none}
+}
+@media (max-width:900px){
+  .hero{min-height:0}
+  .hero-top{grid-template-columns:minmax(0,1fr)}
+  .hero-word{margin-top:clamp(40px,14vh,140px)}
+}
+
+/* ---------- film ---------- */
+.step{position:relative;min-height:100vh;display:flex;align-items:center;padding-block:12vh}
+.step > .wrap{width:100%}
+html:not(.gl) .step{min-height:0}
+.panel{width:min(470px,100%);display:flex;flex-direction:column;gap:22px}
+.panel h2{font-size:clamp(40px,4.6vw,70px)}
+.panel .kitname{font-size:clamp(64px,8.2vw,128px);letter-spacing:-.06em;line-height:.86}
+.panel .one{font-size:clamp(18px,1.5vw,21px);color:var(--bone);line-height:1.4;max-width:24em}
+.panel .body{color:var(--mute);font-size:16px;max-width:30em}
+.kithead{display:flex;align-items:center;gap:12px}
+.kithead svg{width:26px;height:26px;color:var(--bone);flex:none}
+.kithead .kick{color:var(--soft)}
+.sets{display:flex;flex-wrap:wrap;gap:8px}
+.not{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;padding:14px 16px;border-radius:12px;background:rgba(14,15,18,.55);border:1px solid var(--line);font-size:14.5px;color:var(--mute);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.not b{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--bone);font-weight:500;padding-top:3px}
+.hud{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line-2);border-radius:14px;background:rgba(13,14,17,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);overflow:hidden}
+.hud div{padding:14px 14px 13px;min-width:0}
+.hud div+div{border-left:1px solid var(--line)}
+.hud span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
+.hud b{display:block;font-family:var(--mono);font-weight:500;font-size:clamp(14px,1.25vw,17px);color:var(--bone);margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.hud b.hot{color:var(--ember)}
+.hud .sim{position:absolute;right:10px;top:-1px;transform:translateY(-50%);background:var(--ink);padding:0 6px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);border:0}
+.hudwrap{position:relative;padding-top:6px}
+.hudwrap .sim{position:absolute;right:12px;top:0;z-index:2;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);background:var(--ink-2);padding:1px 7px;border-radius:999px;border:1px solid var(--line)}
+
+/* route calculator */
+.calc{border:1px solid var(--line-2);border-radius:16px;background:rgba(13,14,17,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);overflow:hidden}
+.calc .top2{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;padding:18px 18px 14px;border-bottom:1px solid var(--line)}
+.calc label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
+.amt{display:flex;align-items:baseline;gap:8px}
+.amt input{width:4.2ch;field-sizing:content;min-width:2ch;background:none;border:0;color:var(--bone);font-family:var(--display);font-size:clamp(38px,3.6vw,52px);font-weight:300;letter-spacing:-.04em;padding:0;outline:none;font-variant-numeric:tabular-nums;border-bottom:1px solid var(--line-3)}
+.amt input:focus{border-bottom-color:var(--bone)}
+.amt input.bad{border-bottom-color:var(--signal)}
+.amt span{font-family:var(--mono);color:var(--mute);font-size:13px}
+.pre{display:flex;gap:6px}
+.pre button{height:30px;padding:0 11px;border-radius:999px;border:1px solid var(--line-2);background:none;font-family:var(--mono);font-size:12px;color:var(--mute)}
+.pre button:hover,.pre button.on{color:var(--bone);border-color:var(--line-3);background:rgba(237,235,229,.05)}
+.split3{display:flex;flex-direction:column}
+.split3 div{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:13px 18px;border-bottom:1px solid var(--line)}
+.split3 div:last-child{border-bottom:0}
+.split3 b{font-weight:500;font-size:15px}
+.split3 small{display:block;color:var(--dim);font-size:12.5px;margin-top:1px}
+.split3 .pc{font-family:var(--mono);font-size:12px;color:var(--mute)}
+.split3 .v{font-family:var(--mono);font-size:15px;color:var(--bone);min-width:7ch;text-align:right;font-variant-numeric:tabular-nums}
+.split3 .k .v{color:var(--ember)}
+
+/* outro */
+.flow{display:flex;flex-direction:column;border:1px solid var(--line-2);border-radius:16px;overflow:hidden;background:rgba(13,14,17,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.flow div{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:15px 18px;border-bottom:1px solid var(--line);font-size:14.5px}
+.flow div:last-child{border-bottom:0}
+.flow em{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--mute);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.flow div:last-child em{color:var(--ember)}
+.ca{display:inline-flex;align-items:center;gap:10px;max-width:100%;height:48px;padding:0 6px 0 18px;border:1px solid var(--line-2);border-radius:999px;font-family:var(--mono);font-size:13px;color:var(--mute);background:rgba(8,8,10,.35)}
+.ca code{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--bone);min-width:0}
+.ca .cp{height:36px;padding:0 14px;border-radius:999px;background:var(--ink-4);display:flex;align-items:center;font-size:12px;color:var(--bone);flex:none}
+
+@media (max-width:760px){
+  .veil{display:none}
+  .step{display:block;min-height:0;padding-block:64svh 18svh}
+  .panel{width:100%;padding:22px 18px 20px;border-radius:20px;background:rgba(10,10,13,.72);border:1px solid var(--line-2);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);gap:18px}
+  .panel .kitname{font-size:64px}
+  .hud b{font-size:13.5px}
+  .hud div{padding:12px 10px}
+  .split3 div{grid-template-columns:auto minmax(0,1fr) auto;padding:12px 14px}
+  .split3 .pc{display:none}
+}
+
+/* ---------- solid sections ---------- */
+.solid{position:relative;z-index:2;background:var(--ink);margin-inline:calc(-1*var(--gut));padding-inline:var(--gut)}
+.solid::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:220px;background:linear-gradient(to bottom,rgba(8,8,10,0),var(--ink));pointer-events:none}
+section.block{padding-block:clamp(72px,10vw,140px)}
+section.block+section.block{border-top:1px solid var(--line)}
+.head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:22px clamp(24px,4vw,64px);align-items:end;margin-bottom:clamp(32px,5vw,56px)}
+.head .kick{grid-column:1/-1}
+.head h2{font-size:clamp(40px,5vw,76px)}
+.head p{color:var(--mute);max-width:32em;font-size:16.5px}
+@media (max-width:860px){.head{grid-template-columns:minmax(0,1fr)}}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line-2);border-radius:18px;background:linear-gradient(180deg,rgba(237,235,229,.025),rgba(237,235,229,0))}
+table{width:100%;border-collapse:collapse;min-width:720px;font-size:14.5px}
+th{font-family:var(--mono);font-weight:400;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);text-align:left;padding:15px 18px;border-bottom:1px solid var(--line-2)}
+td{padding:15px 18px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr{transition:background .2s}
+tbody tr:hover{background:rgba(237,235,229,.03)}
+td.num,th.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.coin{display:flex;align-items:center;gap:12px}
+.coin .av{width:34px;height:34px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--plate-ink)}
+.coin b{font-weight:500;display:block}
+.coin small{font-family:var(--mono);color:var(--mute);font-size:12px}
+.kpill{display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px 0 8px;border-radius:999px;background:var(--ink-3);border:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--bone)}
+.kpill svg{width:14px;height:14px;color:var(--dim)}
+.stat{font-family:var(--mono);font-size:13px;color:var(--soft)}
+.note{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:14px;color:var(--dim);font-size:13px}
+@media (max-width:640px){
+  .tablewrap{border:0;border-radius:0;overflow:visible;background:none}
+  .tablewrap table{min-width:0}
+  .tablewrap thead{display:none}
+  .tablewrap tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 12px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .tablewrap tbody tr:first-child{border-top:1px solid var(--line-2)}
+  .tablewrap td{padding:0;border:0}
+  .tablewrap td:nth-child(2){justify-self:end;align-self:center}
+  .tablewrap td.stat{grid-column:1/-1;padding-left:46px}
+  .tablewrap td.num{display:none}
+}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:16px}
+.filters .g{display:flex;flex-wrap:wrap;gap:6px}
+.filters button{height:34px;padding:0 14px;border-radius:999px;border:1px solid var(--line-2);background:rgba(8,8,10,.35);font-size:13.5px;color:var(--mute)}
+.filters button.on{background:var(--bone);color:var(--plate-ink);border-color:var(--bone)}
+.search{height:38px;width:min(280px,100%);border-radius:999px;border:1px solid var(--line-2);background:rgba(13,14,17,.6);color:var(--bone);padding:0 16px;font:inherit;font-size:14px}
+
+.faq{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px)}
+.faq h2{font-size:clamp(40px,5vw,76px);margin-top:22px}
+details{border-bottom:1px solid var(--line)}
+details:first-of-type{border-top:1px solid var(--line-2)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;font-size:18px;font-weight:500}
+summary::-webkit-details-marker{display:none}
+summary i{width:12px;height:12px;flex:none;position:relative}
+summary i::before,summary i::after{content:"";position:absolute;left:0;top:5.25px;width:12px;height:1.5px;background:var(--mute);transition:transform .25s}
+summary i::after{transform:rotate(90deg)}
+details[open] summary i::after{transform:rotate(0)}
+details p{color:var(--mute);padding:0 0 24px;max-width:38em}
+@media (max-width:860px){.faq{grid-template-columns:minmax(0,1fr)}}
+
+footer{background:var(--ink);margin-inline:calc(-1*var(--gut));padding:clamp(56px,8vw,110px) var(--gut) 40px;border-top:1px solid var(--line)}
+.bigmark{display:block;width:100%;height:auto;color:var(--bone)}
+.foot{display:flex;flex-wrap:wrap;gap:20px 40px;justify-content:space-between;align-items:flex-end;margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
+.foot nav{display:flex;flex-wrap:wrap;gap:6px 22px}
+.foot nav a{color:var(--mute);text-decoration:none;font-size:14px}
+.foot nav a:hover{color:var(--bone)}
+.foot p{color:var(--dim);font-size:13px;max-width:44em}
+
+/* ---------- product views ---------- */
+.view{animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:.4;transform:translateY(10px)}to{opacity:1;transform:none}}
+.vhead{padding-block:clamp(44px,7vw,96px) clamp(28px,4vw,48px);display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.vhead h1{font-size:clamp(48px,7vw,104px);margin-top:18px}
+.vhead p{color:var(--mute);margin-top:18px;max-width:36em}
+.launch{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,4vw,56px);align-items:start;padding-bottom:110px}
+.form{border:1px solid var(--line-2);border-radius:22px;background:rgba(11,12,15,.7);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);padding:6px clamp(18px,3vw,32px)}
+.seg{display:inline-flex;padding:4px;border-radius:999px;border:1px solid var(--line-2);gap:4px;background:rgba(8,8,10,.4)}
+.seg button{height:38px;padding:0 18px;border-radius:999px;border:0;background:none;color:var(--mute);font-size:14px}
+.seg button.on{background:var(--bone);color:var(--plate-ink)}
+.fs{border:0;margin:0;padding:26px 0;border-top:1px solid var(--line);display:grid;gap:18px;min-width:0}
+.fs:first-of-type{border-top:0}
+.fs legend{float:left;width:100%;padding:0;margin-bottom:4px;display:flex;align-items:baseline;gap:14px}
+.fs legend .n{font-family:var(--mono);font-size:11.5px;color:var(--dim)}
+.fs legend b{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:-.03em}
+.fs legend + *{clear:both}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.f{display:flex;flex-direction:column;gap:7px;min-width:0}
+.f label{font-size:13px;color:var(--mute)}
+.hint{font-size:12.5px;color:var(--dim)}
+.in{height:46px;border-radius:12px;border:1px solid var(--line-2);background:rgba(8,8,10,.5);color:var(--bone);padding:0 14px;font:inherit;font-size:15px;width:100%;transition:border-color .2s,box-shadow .2s}
+textarea.in{height:auto;min-height:90px;padding:12px 14px;resize:vertical}
+.in:focus{border-color:var(--line-3);outline:none;box-shadow:0 0 0 3px rgba(237,235,229,.06)}
+.in.bad{border-color:var(--signal)}
+.unit{position:relative}
+.unit .in{padding-right:52px}
+.unit span{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:12px;color:var(--dim)}
+.drop{display:flex;align-items:center;gap:16px;padding:14px;border:1px dashed var(--line-3);border-radius:14px;cursor:pointer;transition:border-color .2s,background .2s}
+.drop:hover,.drop.over{border-color:var(--bone);background:rgba(237,235,229,.03)}
+.drop .pv{width:64px;height:64px;border-radius:12px;background:var(--ink-3);flex:none;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:var(--dim);font-family:var(--mono);font-size:11px}
+.drop b{font-weight:500;display:block}
+.drop small{color:var(--dim);font-size:12.5px}
+.kitpick{display:grid;grid-template-columns:140px minmax(0,1fr);gap:20px;align-items:center}
+.kitpick .dial{width:140px;height:140px;color:var(--ink-4)}
+.kitpick .dial path{cursor:pointer;transition:fill .25s}
+.kitpick .dial path:hover{fill:var(--line-3)}
+.kitpick .dial path.on{fill:var(--signal)}
+.kitopts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.kitopt{position:relative}
+.kitopt input{position:absolute;opacity:0;pointer-events:none}
+.kitopt label{display:block;height:100%;padding:14px 16px;border:1px solid var(--line-2);border-radius:14px;cursor:pointer;transition:border-color .2s,background .2s}
+.kitopt label b{display:flex;align-items:center;gap:8px;font-weight:500}
+.kitopt label b i{width:7px;height:7px;border-radius:50%;background:var(--dim)}
+.kitopt label span{display:block;color:var(--mute);font-size:13px;margin-top:4px;line-height:1.4}
+.kitopt input:checked + label{border-color:var(--bone);background:rgba(237,235,229,.04)}
+.kitopt input:checked + label b i{background:var(--signal);box-shadow:0 0 0 3px var(--signal-soft)}
+.kitopt input:focus-visible + label{outline:2px solid var(--signal);outline-offset:2px}
+.range{display:flex;align-items:center;gap:14px}
+.range input{flex:1;accent-color:var(--signal)}
+.range output{font-family:var(--mono);font-size:14px;min-width:4ch;text-align:right}
+.devbuy{display:flex;flex-wrap:wrap;gap:8px}
+.devbuy button{height:40px;padding:0 16px;border-radius:12px;border:1px solid var(--line-2);background:none;font-family:var(--mono);font-size:13px;color:var(--mute)}
+.devbuy button.on{border-color:var(--bone);color:var(--bone);background:rgba(237,235,229,.04)}
+.plate{position:sticky;top:calc(env(safe-area-inset-top,0px) + 92px);background:var(--plate);color:var(--plate-ink);border-radius:22px;padding:24px;box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 40px 100px -30px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.05);background-image:radial-gradient(120% 70% at 20% 0%,rgba(255,255,255,.6),transparent 60%)}
+.plate .ph{display:flex;align-items:center;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--plate-line)}
+.plate .ph span{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--plate-mute)}
+.plate .ph svg{width:28px;height:28px;color:var(--plate-ink)}
+.plate .coinline{display:flex;align-items:center;gap:14px;padding:18px 0;border-bottom:1px solid var(--plate-line)}
+.plate .coinline .pv{width:52px;height:52px;border-radius:50%;background:var(--plate-2);background-size:cover;background-position:center;flex:none}
+.plate .coinline b{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:-.035em;display:block;line-height:1.1;overflow-wrap:anywhere}
+.plate .coinline small{font-family:var(--mono);color:var(--plate-mute);font-size:12.5px}
+.plate dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);font-size:14px}
+.plate dt,.plate dd{margin:0;padding:11px 0;border-bottom:1px solid var(--plate-line)}
+.plate dt{color:var(--plate-mute)}
+.plate dd{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:13px}
+.plate dd.kitv{font-family:var(--body);font-weight:600;font-size:14px;display:flex;justify-content:flex-end;align-items:center;gap:8px}
+.plate dd.kitv i{width:7px;height:7px;border-radius:50%;background:var(--signal)}
+.pbar{display:flex;height:10px;border-radius:4px;overflow:hidden;gap:2px;margin:16px 0 8px}
+.pbar i{display:block}
+.pbar .k{flex:80;background:var(--signal)}.pbar .t{flex:15;background:var(--plate-ink)}.pbar .p{flex:5;background:#A9A59C}
+.plegend{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--plate-mute);gap:8px;flex-wrap:wrap}
+.plate .go{width:100%;height:52px;margin-top:20px;border-radius:999px;border:0;background:var(--plate-ink);color:var(--plate);font-weight:500;font-size:15px}
+.plate .go:hover{background:#000}
+.plate .go:disabled{opacity:.45;cursor:not-allowed}
+.review{margin-top:16px;padding:16px;border-radius:14px;background:var(--plate-2);display:grid;gap:12px;font-size:14px}
+.review label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.review input{accent-color:var(--plate-ink);margin-top:3px}
+.msg{font-size:13.5px;color:var(--plate-mute);min-height:1.2em}
+.msg.err{color:#B5300E}
+@media (max-width:960px){.launch{grid-template-columns:minmax(0,1fr)}.plate{position:static}}
+@media (max-width:560px){.g2,.g3,.kitopts{grid-template-columns:minmax(0,1fr)}.kitpick{grid-template-columns:minmax(0,1fr);justify-items:center}}
+.docs{display:grid;grid-template-columns:220px minmax(0,1fr);gap:clamp(24px,5vw,80px);padding-bottom:110px}
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 96px);align-self:start;display:flex;flex-direction:column;gap:2px;border-left:1px solid var(--line)}
+.toc a{padding:7px 0 7px 16px;margin-left:-1px;border-left:1px solid transparent;color:var(--dim);text-decoration:none;font-size:14px}
+.toc a:hover{color:var(--bone)}
+.toc a.on{color:var(--bone);border-left-color:var(--signal)}
+.doc{max-width:44em;padding:clamp(20px,3vw,40px);border:1px solid var(--line-2);border-radius:22px;background:rgba(11,12,15,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.doc section{padding:6px 0 34px;scroll-margin-top:96px}
+.doc section:last-child{padding-bottom:4px}
+.doc h2{font-size:clamp(30px,3.2vw,42px);margin-bottom:16px}
+.doc h3{font-family:var(--display);font-weight:400;font-size:22px;letter-spacing:-.03em;margin:24px 0 8px}
+.doc p,.doc li{color:var(--soft);font-size:16.5px;line-height:1.7}
+.doc p+p{margin-top:12px}
+.doc ol,.doc ul{padding-left:22px;margin:12px 0}
+.doc li+li{margin-top:8px}
+.doc code{font-family:var(--mono);font-size:.88em;background:var(--ink-3);padding:2px 6px;border-radius:6px;color:var(--bone);overflow-wrap:anywhere}
+.doc .callout{margin-top:18px;padding:16px 18px;border:1px solid var(--line-2);border-radius:12px;background:var(--ink-2);color:var(--mute);font-size:15px}
+@media (max-width:860px){.docs{grid-template-columns:minmax(0,1fr)}.toc{position:static;flex-direction:row;flex-wrap:wrap;border-left:0;gap:6px}.toc a{border:1px solid var(--line-2);border-radius:999px;padding:6px 12px;margin:0}.toc a.on{border-color:var(--bone)}}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:var(--bone);color:var(--plate-ink);padding:10px 18px;border-radius:999px;font-size:14px;font-weight:500;transition:opacity .25s,transform .25s;pointer-events:none;z-index:80}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
+
+</head>
+<body>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="veil" id="veil" aria-hidden="true"></div>
+<div class="tags" id="tags" aria-hidden="true">
+  <div class="t3 box" id="tg-r0"><i class="sw k"></i><b>Kit</b><span>80%</span><em id="tv-r0">0.80 SOL</em></div>
+  <div class="t3 box" id="tg-r1"><i class="sw t"></i><b>$TELOS burn</b><span>15%</span><em id="tv-r1">0.15 SOL</em></div>
+  <div class="t3 box" id="tg-r2"><i class="sw p"></i><b>Keeper</b><span>5%</span><em id="tv-r2">0.05 SOL</em></div>
+  <div class="t3 hot" id="tg-floor"><b>Floor</b><span id="tv-floor">18% under the high</span></div>
+  <div class="t3" id="tg-price"><b>Price</b></div>
+  <div class="t3 box hot" id="tg-win"><b>Winner</b><em id="tv-win">—</em></div>
+  <div class="t3" id="tg-fill"><b id="tv-fill">Curve 0%</b></div>
+  <div class="t3 box hot" id="tg-grad"><b>Graduated</b><span>Fees now pay the creator</span></div>
+</div>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="brand" href="#home" aria-label="TELOS home"><svg class="svgmark" role="img" aria-label="TELOS" xmlns="http://www.w3.org/2000/svg" viewBox="1.20 -2.10 396.80 75.20"><path fill="currentColor" d="M23.0 71.0V9.89H1.20V0.0H55.6V9.89H33.80V71.0Z"/><path fill="currentColor" d="M87.4 71.0V0.0H133.60V9.89H98.20V30.59H132.4V40.2H98.20V61.1H134.4V71.0Z"/><path fill="currentColor" d="M170.3 71.0V0.0H181.10V61.1H215.70V71.0Z"/><g transform="translate(242.00 -1.50) scale(0.38) translate(-4 -4)"><path class="acc" d="M107.00 93.00 L107.00 4.26 A96 96 0 0 1 195.74 93.00 Z"/><path fill="currentColor" d="M93.00 93.00 L93.00 4.26 A96 96 0 0 0 4.26 93.00 Z"/><path fill="currentColor" d="M93.00 107.00 L93.00 195.74 A96 96 0 0 1 4.26 107.00 Z"/><path fill="currentColor" d="M107.00 107.00 L107.00 195.74 A96 96 0 0 0 195.74 107.00 Z"/></g><path fill="currentColor" d="M372.2 72.6Q363.7 72.6 357.45 69.5Q351.2 66.4 347.6 60.90Q344.0 55.4 343.4 48.09L354.5 47.4Q355.5 54.8 359.95 58.8Q364.4 62.8 372.4 62.8Q379.3 62.8 383.1 60.2Q386.9 57.6 386.9 52.59Q386.9 49.59 385.45 47.25Q384.0 44.9 379.95 42.95Q375.9 41.0 368.1 39.09Q359.6 37.1 354.5 34.55Q349.4 32.0 347.15 28.25Q344.9 24.5 344.9 19.0Q344.9 12.89 347.85 8.24Q350.8 3.59 356.3 0.99Q361.8 -1.60 369.5 -1.60Q377.6 -1.60 383.4 1.39Q389.2 4.39 392.5 9.59Q395.8 14.79 396.6 21.5L385.5 22.09Q384.7 16.0 380.65 12.09Q376.6 8.19 369.3 8.19Q363.1 8.19 359.55 11.04Q356.0 13.89 356.0 18.59Q356.0 21.69 357.45 23.69Q358.9 25.69 362.65 27.24Q366.4 28.79 373.3 30.4Q382.5 32.5 387.9 35.55Q393.3 38.6 395.65 42.7Q398.0 46.8 398.0 52.0Q398.0 58.3 394.75 62.94Q391.5 67.6 385.7 70.1Q379.9 72.6 372.2 72.6Z"/></svg></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#route" data-go="route">Route</a>
+      <a href="#kits" data-go="kits">Kits</a>
+      <a href="#explore">Explore</a>
+      <a href="#docs">Docs</a>
+    </nav>
+    <div class="rt">
+      <button class="chip ca-chip" id="topCa" type="button" hidden></button>
+      <a class="btn btn-solid" href="#launch">Launch</a>
+      <button class="menu" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false"><span></span></button>
+    </div>
+  </div>
+  <div class="wrap drawer" id="drawer" hidden>
+    <a href="#route" data-go="route">Route</a>
+    <a href="#kits" data-go="kits">Kits</a>
+    <a href="#explore">Explore</a>
+    <a href="#docs">Docs</a>
+    <a href="#launch">Launch a coin</a>
+  </div>
+</header>
+
+<main>
+<!-- ================= HOME ================= -->
+<div id="v-home" class="view">
+  <section class="hero wrap" data-stage="0">
+    <div class="hero-top">
+      <div>
+        <div class="kick"><i></i>Creator-fee routing for pump.fun</div>
+        <h1>Every fee has a <em>purpose.</em></h1>
+      </div>
+      <div class="hero-side">
+        <p class="lead">Launch a pump.fun coin and lock its creator fees to one job. Burn the supply, hold a floor, pay a holder every hour, or buy the curve to graduation. The lock is permanent.</p>
+        <div class="ctas">
+          <a class="btn btn-solid" href="#launch">Launch a coin <span class="ar">→</span></a>
+          <a class="btn btn-ghost" href="#route" data-go="route">Follow the fees</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-word" aria-hidden="true"><svg class="svgmark" xmlns="http://www.w3.org/2000/svg" viewBox="1.20 -2.10 396.80 75.20"><path fill="currentColor" d="M23.0 71.0V9.89H1.20V0.0H55.6V9.89H33.80V71.0Z"/><path fill="currentColor" d="M87.4 71.0V0.0H133.60V9.89H98.20V30.59H132.4V40.2H98.20V61.1H134.4V71.0Z"/><path fill="currentColor" d="M170.3 71.0V0.0H181.10V61.1H215.70V71.0Z"/><g id="oslot" transform="translate(242.00 -1.50) scale(0.38) translate(-4 -4)"><path class="acc" d="M107.00 93.00 L107.00 4.26 A96 96 0 0 1 195.74 93.00 Z"/><path fill="currentColor" d="M93.00 93.00 L93.00 4.26 A96 96 0 0 0 4.26 93.00 Z"/><path fill="currentColor" d="M93.00 107.00 L93.00 195.74 A96 96 0 0 1 4.26 107.00 Z"/><path fill="currentColor" d="M107.00 107.00 L107.00 195.74 A96 96 0 0 0 195.74 107.00 Z"/></g><path fill="currentColor" d="M372.2 72.6Q363.7 72.6 357.45 69.5Q351.2 66.4 347.6 60.90Q344.0 55.4 343.4 48.09L354.5 47.4Q355.5 54.8 359.95 58.8Q364.4 62.8 372.4 62.8Q379.3 62.8 383.1 60.2Q386.9 57.6 386.9 52.59Q386.9 49.59 385.45 47.25Q384.0 44.9 379.95 42.95Q375.9 41.0 368.1 39.09Q359.6 37.1 354.5 34.55Q349.4 32.0 347.15 28.25Q344.9 24.5 344.9 19.0Q344.9 12.89 347.85 8.24Q350.8 3.59 356.3 0.99Q361.8 -1.60 369.5 -1.60Q377.6 -1.60 383.4 1.39Q389.2 4.39 392.5 9.59Q395.8 14.79 396.6 21.5L385.5 22.09Q384.7 16.0 380.65 12.09Q376.6 8.19 369.3 8.19Q363.1 8.19 359.55 11.04Q356.0 13.89 356.0 18.59Q356.0 21.69 357.45 23.69Q358.9 25.69 362.65 27.24Q366.4 28.79 373.3 30.4Q382.5 32.5 387.9 35.55Q393.3 38.6 395.65 42.7Q398.0 46.8 398.0 52.0Q398.0 58.3 394.75 62.94Q391.5 67.6 385.7 70.1Q379.9 72.6 372.2 72.6Z"/></svg></div>
+    <div class="hero-foot">
+      <div class="route-strip" aria-label="Fee split">
+        <span><i class="sw k"></i><b>80%</b> runs the kit</span>
+        <span><i class="sw t"></i><b>15%</b> buys &amp; burns $TELOS</span>
+        <span><i class="sw p"></i><b>5%</b> pays the keeper</span>
+      </div>
+      <a class="cue" href="#route" data-go="route"><span></span>Scroll</a>
+    </div>
+  </section>
+
+  <section class="step" data-stage="1" id="route">
+    <div class="wrap">
+      <div class="panel">
+        <div class="kick"><i></i>The route</div>
+        <h2>One collect. Three <em>destinations.</em></h2>
+        <p class="body">Creator fees on a TELOS coin are locked in a vault that only the TELOS program can spend. Anyone can crank it, and every crank splits the collect the same way.</p>
+        <div class="calc">
+          <div class="top2">
+            <div>
+              <label for="feeIn">Fees in one crank</label>
+              <div class="amt"><input id="feeIn" inputmode="decimal" value="1.00" autocomplete="off"><span>SOL</span></div>
+            </div>
+            <div class="pre" id="pre"><button type="button" data-v="0.25">0.25</button><button type="button" data-v="1" class="on">1</button><button type="button" data-v="5">5</button></div>
+          </div>
+          <div class="split3">
+            <div class="k"><i class="sw k"></i><span><b>Kit</b><small>Burn, floor, draw or graduate</small></span><span class="pc">80%</span><span class="v" id="vK">0.80</span></div>
+            <div><i class="sw t"></i><span><b>$TELOS</b><small>Bought on the market and burned</small></span><span class="pc">15%</span><span class="v" id="vT">0.15</span></div>
+            <div><i class="sw p"></i><span><b>Keeper</b><small>Paid to whoever cranked</small></span><span class="pc">5%</span><span class="v" id="vP">0.05</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="kits"></div>
+
+  <section class="step" data-stage="6" id="token">
+    <div class="wrap">
+      <div class="panel">
+        <div class="kick"><i></i>$TELOS</div>
+        <h2>Every coin on the dial feeds <em>TELOS.</em></h2>
+        <p class="body">15% of every collect, on every coin launched or locked through TELOS, buys $TELOS on the market and burns it. More coins running a kit means more $TELOS leaving supply.</p>
+        <div class="flow" aria-label="How $TELOS is bought">
+          <div><span>A TELOS coin trades</span><em>pump.fun</em></div>
+          <div><span>Creator fees reach the vault</span><em>locked</em></div>
+          <div><span>A keeper cranks the coin</span><em>anyone</em></div>
+          <div><span>15% buys $TELOS and burns it</span><em>every crank</em></div>
+        </div>
+        <div class="ctas" id="tokenCtas"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="solid" id="solid">
+    <section class="block wrap" id="dialpreview">
+      <div class="head">
+        <div class="kick"><i></i>Explore</div>
+        <h2>On the dial.</h2>
+        <p>Every coin launched or locked through TELOS shows up here with its kit and what that kit has done so far.</p>
+      </div>
+      <div class="tablewrap"><table><thead><tr><th>Coin</th><th>Kit</th><th>Kit status</th><th class="num">Market cap</th><th class="num">Age</th></tr></thead><tbody id="homeRows"></tbody></table></div>
+      <div class="note"><span class="tagx">Example data</span>The live feed replaces these rows once coins launch through TELOS.<a href="#explore" style="margin-left:auto;color:var(--bone);text-decoration:none;white-space:nowrap">Open Explore →</a></div>
+    </section>
+    <section class="block wrap">
+      <div class="faq">
+        <div>
+          <div class="kick"><i></i>Questions</div>
+          <h2>The rules, <em>plainly.</em></h2>
+        </div>
+        <div>
+          <details><summary>Can I lock a coin I already launched?<i></i></summary><p>Yes, if it is a SOL-quoted pump.fun coin, the creator wallet signs, and creator fees still pay that wallet. The lock covers fees from that moment on. Coins that already share fees, pay holder rewards or use a stablecoin quote stay where they are.</p></details>
+          <details><summary>Can I change the kit later?<i></i></summary><p>No. The lock is permanent, and that is the point. Holders can check the kit on-chain and know the fees will keep doing that one job.</p></details>
+          <details><summary>Who runs the crank?<i></i></summary><p>Anyone. The signer pays for the transaction, collects the fees and keeps 5% of that collect. The program decides whether the kit spends.</p></details>
+          <details><summary>Can anyone withdraw the vault?<i></i></summary><p>No. The program is the only thing that can spend the vault, and only on the kit's job. Graduate pays the creator only after the coin has graduated.</p></details>
+          <details><summary>Is Floor a guaranteed price floor?<i></i></summary><p>No. Floor buys after spot falls under its line. It is not a resting bid, so a sell can trade through before the next crank.</p></details>
+          <details><summary>Where does the 15% go?<i></i></summary><p>It buys $TELOS on the market and burns it, on every crank of every TELOS coin.</p></details>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ================= EXPLORE ================= -->
+<div id="v-explore" class="view" hidden>
+  <div class="wrap">
+    <div class="vhead">
+      <div>
+        <div class="kick"><i></i>Explore</div>
+        <h1>On the <em>dial.</em></h1>
+        <p id="exCount">Coins launched or locked through TELOS.</p>
+      </div>
+      <a class="btn btn-solid" href="#launch">Launch a coin <span class="ar">→</span></a>
+    </div>
+    <div class="filters">
+      <div class="g" id="exFilters"></div>
+      <input class="search" id="exSearch" type="search" placeholder="Search name or ticker" aria-label="Search coins">
+    </div>
+    <div class="tablewrap" style="background:rgba(11,12,15,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)"><table><thead><tr><th>Coin</th><th>Kit</th><th>Kit status</th><th class="num">Market cap</th><th class="num">Age</th></tr></thead><tbody id="exRows"></tbody></table></div>
+    <div class="note" style="margin-bottom:110px"><span class="tagx">Example data</span>These rows show how coins appear. The live feed replaces them once coins launch through TELOS.</div>
+  </div>
+</div>
+
+<!-- ================= LAUNCH ================= -->
+<div id="v-launch" class="view" hidden>
+  <div class="wrap">
+    <div class="vhead">
+      <div>
+        <div class="kick"><i></i>Launch</div>
+        <h1>Give it a <em>job.</em></h1>
+        <p>Launch a new coin, or lock an existing SOL coin you created on pump.fun. 15% of creator fees buys and burns $TELOS, the keeper who cranks gets 5%, and the other 80% runs the kit.</p>
+      </div>
+      <div class="seg" role="tablist" aria-label="Launch mode">
+        <button type="button" role="tab" class="on" id="modeNew" aria-selected="true">New coin</button>
+        <button type="button" role="tab" id="modeOld" aria-selected="false">Existing coin</button>
+      </div>
+    </div>
+    <div class="launch">
+      <form id="lf" class="form" novalidate>
+        <fieldset class="fs">
+          <legend><span class="n">01</span><b>Coin</b></legend>
+          <div class="newonly">
+            <div class="drop" id="drop" tabindex="0" role="button" aria-label="Upload coin image">
+              <div class="pv" id="imgPv">IMG</div>
+              <div><b>Coin image</b><small>PNG, JPG, WEBP or GIF. Under 5 MB. Required.</small></div>
+              <input type="file" id="img" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+            </div>
+          </div>
+          <div class="g2 newonly">
+            <div class="f"><label for="cName">Name</label><input class="in" id="cName" maxlength="32" placeholder="Ember" autocomplete="off"></div>
+            <div class="f"><label for="cTicker">Ticker</label><input class="in" id="cTicker" maxlength="10" placeholder="EMBER" autocomplete="off" style="text-transform:uppercase"></div>
+          </div>
+          <div class="f newonly"><label for="cDesc">Description</label><textarea class="in" id="cDesc" maxlength="280" placeholder="One line on what this coin is."></textarea></div>
+          <div class="g3 newonly">
+            <div class="f"><label for="cX">X</label><input class="in" id="cX" placeholder="x.com/…" autocomplete="off"></div>
+            <div class="f"><label for="cTg">Telegram</label><input class="in" id="cTg" placeholder="t.me/…" autocomplete="off"></div>
+            <div class="f"><label for="cWeb">Website</label><input class="in" id="cWeb" placeholder="https://…" autocomplete="off"></div>
+          </div>
+          <div class="oldonly" hidden>
+            <div class="f"><label for="cMint">Coin mint address</label><input class="in mono" id="cMint" placeholder="Paste the pump.fun mint" autocomplete="off" spellcheck="false"><span class="hint">The creator wallet has to sign, and creator fees must still pay that wallet. The lock covers fees from then on.</span></div>
+          </div>
+        </fieldset>
+        <fieldset class="fs">
+          <legend><span class="n">02</span><b>Kit</b></legend>
+          <div class="kitpick">
+            <svg class="dial" viewBox="4 4 192 192" id="pickDial" aria-hidden="true"></svg>
+            <div class="kitopts" id="kitopts"></div>
+          </div>
+        </fieldset>
+        <fieldset class="fs">
+          <legend><span class="n">03</span><b>Settings</b></legend>
+          <div id="kitSettings" class="g2"></div>
+          <div class="f">
+            <label for="slip">Slippage</label>
+            <div class="range"><input type="range" id="slip" min="1" max="20" step="0.5" value="5"><output id="slipOut" for="slip">5%</output></div>
+            <span class="hint">The vault won't take a fill worse than this. Capped at 20%.</span>
+          </div>
+        </fieldset>
+        <fieldset class="fs newonly">
+          <legend><span class="n">04</span><b>Developer buy</b></legend>
+          <p class="hint" style="font-size:14px">Optional. Bought in the same transaction as the coin.</p>
+          <div class="devbuy" id="devbuy">
+            <button type="button" data-p="0" class="on">None</button><button type="button" data-p="1">1%</button><button type="button" data-p="2.5">2.5%</button><button type="button" data-p="5">5%</button>
+          </div>
+          <span class="hint" id="devHint">No developer buy.</span>
+        </fieldset>
+      </form>
+      <aside class="plate" aria-label="Launch plan">
+        <div class="ph"><span>Plan</span><svg viewBox="4 4 192 192" id="plateMark" aria-hidden="true"></svg></div>
+        <div class="coinline"><div class="pv" id="pPv"></div><div><b id="pName">Untitled</b><small id="pTicker">$TICKER</small></div></div>
+        <dl id="pRows"></dl>
+        <div class="pbar" aria-hidden="true"><i class="k"></i><i class="t"></i><i class="p"></i></div>
+        <div class="plegend"><span>Kit 80%</span><span>$TELOS burn 15%</span><span>Keeper 5%</span></div>
+        <button type="button" class="go" id="goBtn">Review plan</button>
+        <div class="review" id="review" hidden>
+          <label id="ackRow"><input type="checkbox" id="ack"> I understand the kit is locked for good and can't be changed after launch.</label>
+          <button type="button" class="go" id="signBtn" style="margin-top:0" disabled>Sign &amp; launch</button>
+          <div class="msg" id="msg" role="status"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<!-- ================= DOCS ================= -->
+<div id="v-docs" class="view" hidden>
+  <div class="wrap">
+    <div class="vhead"><div><div class="kick"><i></i>Docs</div><h1>How TELOS <em>works.</em></h1><p>TELOS launches a normal pump.fun coin and locks its creator fees to one job.</p></div></div>
+    <div class="docs">
+      <nav class="toc" id="toc" aria-label="Docs sections">
+        <a href="#d-route" data-doc="d-route" class="on">Fee route</a>
+        <a href="#d-program" data-doc="d-program">The program</a>
+        <a href="#d-crank" data-doc="d-crank">Cranking</a>
+        <a href="#d-existing" data-doc="d-existing">Existing coins</a>
+        <a href="#d-kits" data-doc="d-kits">Kits</a>
+        <a href="#d-not" data-doc="d-not">What it doesn't do</a>
+        <a href="#d-token" data-doc="d-token">$TELOS</a>
+      </nav>
+      <article class="doc">
+        <section id="d-route"><h2>Fee route</h2>
+          <ol>
+            <li>The coin launches on pump.fun, with SOL as the quote.</li>
+            <li>Creator fees are locked on pump.fun. 15% buys and burns $TELOS. The keeper who runs the crank gets 5%. The other 80% is locked to the kit vault.</li>
+            <li>A crank runs the kit and is paid from that collect. Burn and Floor spend fees buying the coin. Draw pays one weighted holder each hour. Graduate buys the curve until the coin completes, then pays the creator.</li>
+          </ol>
+        </section>
+        <section id="d-program"><h2>The program</h2>
+          <p>The on-chain program creates the vault, locks pump.fun's fee split, and is the only thing that can spend that vault. It checks every spend against the kit and its settings: the spend threshold, the per-crank cap and the slippage limit.</p>
+          <p>The kit and its settings are set once, at launch or at lock, and can't be changed afterwards.</p>
+        </section>
+        <section id="d-crank"><h2>Cranking</h2>
+          <p>Anyone can crank a locked coin. The signer pays for the transaction, collects the fees and keeps 5% of that collect. The program decides whether the kit spends.</p>
+          <div class="callout">Cranking is permissionless on purpose. A coin keeps working even if its creator walks away.</div>
+        </section>
+        <section id="d-existing"><h2>Existing coins</h2>
+          <p>A SOL coin that is already on pump.fun can be locked if the creator wallet signs, and if creator fees still pay that wallet. The lock only covers fees from then on.</p>
+          <p>Coins that already share fees, pay holder rewards or use a stable quote stay where they are.</p>
+        </section>
+        <section id="d-kits"><h2>Kits</h2>
+          <h3>Burn</h3><p>Each crank spends the fees sitting above a threshold, up to an optional cap, and burns what it buys. Nothing in the vault can be withdrawn.</p>
+          <h3>Floor</h3><p>The floor sits a set percent under the highest price the curve has printed, and that line only moves up. When spot is under it, a crank buys with fees, only enough to lift the price back to the line, and burns the tokens.</p>
+          <h3>Draw</h3><p>Once an hour, the Draw executor picks one wallet, weighted by token balance. The program verifies the hourly limit and the unpaid pot, then sends that pot from the vault to the winner.</p>
+          <h3>Graduate</h3><p>Until the coin graduates, each crank spends the fees buying the bonding curve and burns the tokens. Once the curve is complete, later fees are paid to the creator.</p>
+        </section>
+        <section id="d-not"><h2>What it doesn't do</h2>
+          <ul>
+            <li>Draw picks one eligible wallet, weighted by its balance, and pays it the whole new-fee pot each hour. A wallet's chance is its eligible balance divided by the total eligible balance at payout time. The bonding curve, empty wallets and program-owned accounts are excluded.</li>
+            <li>Draw does not split fees across holders, pay cashback or dust wallets.</li>
+            <li>Floor buys back after spot crosses its line. It is not a resting bid, so it can't stop a sell from trading through.</li>
+            <li>Graduate pays the creator only after the coin has graduated.</li>
+          </ul>
+        </section>
+        <section id="d-token"><h2>$TELOS</h2>
+          <p>$TELOS is the platform token. 15% of every collect, on every TELOS coin, buys $TELOS on the market and burns it.</p>
+          <p id="docCa"></p>
+        </section>
+      </article>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <svg class="svgmark bigmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="1.20 -2.10 396.80 75.20"><path fill="currentColor" d="M23.0 71.0V9.89H1.20V0.0H55.6V9.89H33.80V71.0Z"/><path fill="currentColor" d="M87.4 71.0V0.0H133.60V9.89H98.20V30.59H132.4V40.2H98.20V61.1H134.4V71.0Z"/><path fill="currentColor" d="M170.3 71.0V0.0H181.10V61.1H215.70V71.0Z"/><g transform="translate(242.00 -1.50) scale(0.38) translate(-4 -4)"><path class="acc" d="M107.00 93.00 L107.00 4.26 A96 96 0 0 1 195.74 93.00 Z"/><path fill="currentColor" d="M93.00 93.00 L93.00 4.26 A96 96 0 0 0 4.26 93.00 Z"/><path fill="currentColor" d="M93.00 107.00 L93.00 195.74 A96 96 0 0 1 4.26 107.00 Z"/><path fill="currentColor" d="M107.00 107.00 L107.00 195.74 A96 96 0 0 0 195.74 107.00 Z"/></g><path fill="currentColor" d="M372.2 72.6Q363.7 72.6 357.45 69.5Q351.2 66.4 347.6 60.90Q344.0 55.4 343.4 48.09L354.5 47.4Q355.5 54.8 359.95 58.8Q364.4 62.8 372.4 62.8Q379.3 62.8 383.1 60.2Q386.9 57.6 386.9 52.59Q386.9 49.59 385.45 47.25Q384.0 44.9 379.95 42.95Q375.9 41.0 368.1 39.09Q359.6 37.1 354.5 34.55Q349.4 32.0 347.15 28.25Q344.9 24.5 344.9 19.0Q344.9 12.89 347.85 8.24Q350.8 3.59 356.3 0.99Q361.8 -1.60 369.5 -1.60Q377.6 -1.60 383.4 1.39Q389.2 4.39 392.5 9.59Q395.8 14.79 396.6 21.5L385.5 22.09Q384.7 16.0 380.65 12.09Q376.6 8.19 369.3 8.19Q363.1 8.19 359.55 11.04Q356.0 13.89 356.0 18.59Q356.0 21.69 357.45 23.69Q358.9 25.69 362.65 27.24Q366.4 28.79 373.3 30.4Q382.5 32.5 387.9 35.55Q393.3 38.6 395.65 42.7Q398.0 46.8 398.0 52.0Q398.0 58.3 394.75 62.94Q391.5 67.6 385.7 70.1Q379.9 72.6 372.2 72.6Z"/></svg>
+    <div class="foot">
+      <div>
+        <p style="color:var(--bone);font-size:16px;margin-bottom:8px">Every fee has a purpose.</p>
+        <p>TELOS routes pump.fun creator fees through an on-chain program. Coins are created by their launchers. Nothing on this site is financial advice.</p>
+      </div>
+      <nav id="footLinks" aria-label="Footer"><a href="#launch">Launch</a><a href="#explore">Explore</a><a href="#docs">Docs</a></nav>
+    </div>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script>
+/* ============================================================
+   TELOS · edit these at launch
+   ============================================================ */
+const TELOS = {
+  ca: "9TzvCF4fWu6yHPvDygRGJx5QgZVzYTcaZmMPdnGopump", // $TELOS contract address. Shows a copy chip when set.
+  x: "",             // e.g. "https://x.com/yourhandle"
+  pumpfun: "https://pump.fun/coin/9TzvCF4fWu6yHPvDygRGJx5QgZVzYTcaZmMPdnGopump",
+  github: "",        // program repo, if public
+  programLive: false // true once the on-chain program is deployed and signing is wired up
+};
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const sstep = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+const lerp = (a, b, t) => a + (b - a) * t;
+
+const KITS = [
+  { id:'burn', name:'Burn', line:'Fees buy the coin. The tokens are burned.',
+    body:'Each crank spends the fees above your threshold, up to an optional cap, and burns everything it buys. Supply only goes one way.',
+    sets:['Spend above','Max per crank','Slippage'], not:'Nothing in the vault can be withdrawn, by anyone.',
+    hud:[['Supply','h-sup'],['Burned','h-burn','hot'],['Last crank','h-last']] },
+  { id:'floor', name:'Floor', line:'A line under the price that only moves up.',
+    body:'The floor sits a set percent under the highest price the curve has printed. When spot falls under it, a crank buys just enough to lift the price back to the line, and burns the tokens.',
+    sets:['Floor distance','Max per crank','Slippage'], not:'It is not a resting bid. A sell can trade through before the next crank.',
+    hud:[['Floor','h-fl','hot'],['Floor buys','h-fb'],['Off the high','h-off']] },
+  { id:'draw', name:'Draw', line:'Every hour, one holder takes the pot.',
+    body:'Once an hour one wallet is picked, weighted by its balance, and receives the whole new-fee pot. Hold more, and your odds rise in proportion.',
+    sets:['Hourly','Weighted by balance'], not:'No splitting, no cashback, no dust. The curve and program accounts can never win.',
+    hud:[['Pot','h-pot','hot'],['Next draw','h-next'],['Last winner','h-lw']] },
+  { id:'graduate', name:'Graduate', line:'Fees buy the curve, then pay the creator.',
+    body:'Until the coin graduates, every crank buys the bonding curve and burns the tokens. Once the curve completes, later fees are paid to the creator.',
+    sets:['Spend above','Max per crank','Slippage'], not:'The creator is paid only after graduation. Not a lamport before.',
+    hud:[['Curve','h-cv','hot'],['Cranks','h-cr'],['Creator','h-cp']] }
+];
+const Q = [[1,-1],[1,1],[-1,1],[-1,-1]]; // SVG space: burn TR, floor BR, draw BL, graduate TL
+function quadD(sx, sy, g = 14, R = 96, c = 100){
+  const h = g/2, ye = Math.sqrt(R*R - h*h), x0 = c + sx*h, y0 = c + sy*h, sw = sx*sy < 0 ? 1 : 0;
+  return `M${x0} ${y0}L${x0} ${(c+sy*ye).toFixed(2)}A${R} ${R} 0 0 ${sw} ${(c+sx*ye).toFixed(2)} ${y0}Z`;
+}
+function markSVG(lit, extra = ''){
+  return `<svg viewBox="4 4 192 192" ${extra}>` + Q.map(([sx,sy],i) =>
+    `<path d="${quadD(sx,sy)}" fill="${i===lit ? 'var(--signal)' : 'currentColor'}"/>`).join('') + '</svg>';
+}
+function toast(t){ const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 1800); }
+async function copy(text){
+  try { await navigator.clipboard.writeText(text); toast('Copied'); }
+  catch(e){ const n = document.createElement('span'); n.textContent = text; document.body.append(n); const r = document.createRange(); r.selectNodeContents(n); getSelection().removeAllRanges(); getSelection().addRange(r); toast('Selected. Press copy.'); setTimeout(() => n.remove(), 4000); }
+}
+const fmtSol = v => { if (!isFinite(v) || v <= 0) return '0.00'; if (v >= 1000) return Math.round(v).toLocaleString('en-US'); let s = String(+v.toFixed(4)); if (!s.includes('.')) s += '.00'; else if (s.split('.')[1].length < 2) s += '0'; return s; };
+const fmtInt = n => Math.round(n).toLocaleString('en-US');
+const fmtM = n => n >= 1e6 ? (n/1e6).toFixed(2) + 'M' : n >= 1e3 ? (n/1e3).toFixed(1) + 'K' : String(Math.round(n));
+
+/* ---------------- links / CA ---------------- */
+(function(){
+  const short = a => a.slice(0,4) + '…' + a.slice(-4);
+  if (TELOS.ca){
+    const c = $('#topCa'); c.hidden = false; c.textContent = '$TELOS ' + short(TELOS.ca); c.onclick = () => copy(TELOS.ca);
+    $('#docCa').innerHTML = `Contract: <code>${TELOS.ca}</code>`;
+  }
+  const t = $('#tokenCtas');
+  if (TELOS.ca) t.insertAdjacentHTML('beforeend', `<button class="ca" type="button" id="caBtn"><span>CA</span><code>${TELOS.ca}</code><span class="cp">Copy</span></button>`);
+  if (TELOS.pumpfun) t.insertAdjacentHTML('beforeend', `<a class="btn btn-solid" href="${TELOS.pumpfun}" target="_blank" rel="noopener">Buy on pump.fun <span class="ar">→</span></a>`);
+  if (!TELOS.ca && !TELOS.pumpfun) t.insertAdjacentHTML('beforeend', `<a class="btn btn-solid" href="#launch">Launch a coin <span class="ar">→</span></a><a class="btn btn-ghost" href="#docs">Read the docs</a>`);
+  $('#caBtn')?.addEventListener('click', () => copy(TELOS.ca));
+  const f = $('#footLinks');
+  if (TELOS.x) f.insertAdjacentHTML('beforeend', `<a href="${TELOS.x}" target="_blank" rel="noopener">X</a>`);
+  if (TELOS.pumpfun) f.insertAdjacentHTML('beforeend', `<a href="${TELOS.pumpfun}" target="_blank" rel="noopener">pump.fun</a>`);
+  if (TELOS.github) f.insertAdjacentHTML('beforeend', `<a href="${TELOS.github}" target="_blank" rel="noopener">GitHub</a>`);
+})();
+
+/* ---------------- simulations (illustrative, shared by 3D + HUDs) ---------------- */
+const Sim = (() => {
+  let seed = 7; const R = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const S = {
+    burn: { supply: 1e9 - 4.18e6, burned: 4.18e6, last: '−1.92M', burst: 0, t: 0, next: 1.2 },
+    floor: { N: 48, raw: [], flo: [], buy: [], ath: 0, line: 0, dist: .18, buys: 0, shift: 0, P: new Float32Array(48), F: new Float32Array(48), B: new Float32Array(48), lo: 0, hi: 1, last: .5, t: 0 },
+    draw: { n: 14, bal: [], cum: new Float32Array(16).fill(2), rad: new Float32Array(16), phase: 'fill', t: 0, pot: .35, pulse: 0, glow: 0, winner: 3, last: '—', lastOdds: '' },
+    grad: { fill: .32, grad: 0, cranks: 9, t: 0, phase: 'run' }
+  };
+  // floor walk
+  const F = S.floor; let p = 1;
+  function walk(){
+    const shock = R() < .07 ? -(.07 + R() * .13) : 0;
+    p = Math.max(.25, p * (1 + (R() - .45) * .05 + shock));
+    F.ath = Math.max(F.ath, p);
+    const line = F.ath * (1 - F.dist); if (line > F.line) F.line = line;
+    let b = 0; if (p < F.line){ p = F.line; b = 1; F.buys++; }
+    F.raw.push(p); F.flo.push(F.line); F.buy.push(b);
+    if (F.raw.length > F.N + 1){ F.raw.shift(); F.flo.shift(); F.buy.shift(); }
+  }
+  for (let i = 0; i < 80; i++) walk(); F.buys = 3;
+  // draw holders
+  const D = S.draw; let tot = 0;
+  for (let i = 0; i < D.n; i++){ const b = Math.pow(R(), 2.1) * 9 + .5; D.bal.push(b); tot += b; }
+  let acc = 0; const mx = Math.max(...D.bal);
+  D.bal.forEach((b,i) => { acc += b / tot; D.cum[i] = acc; D.rad[i] = .09 + .3 * Math.sqrt(b / mx); }); D.cum[D.n-1] = 1.0001; D.tot = tot;
+  const B58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+  const addr = () => { let s = ''; for (let i = 0; i < 8; i++) s += B58[Math.floor(R() * B58.length)]; return s.slice(0,4) + '…' + s.slice(4); };
+
+  function step(dt){
+    // burn
+    const b = S.burn; b.t += dt; b.burst = Math.max(0, b.burst - dt * 1.6);
+    if (b.t > b.next){ b.t = 0; b.next = .9 + R() * .9; const sol = .05 + R() * .05, tok = sol * (2.4e7 + R() * 1.4e7); b.burned += tok; b.supply = 1e9 - b.burned; b.last = '−' + fmtM(tok); b.burst = 1; }
+    // floor
+    F.t += dt; F.shift = Math.min(1, F.t / .16); if (F.t >= .16){ F.t = 0; F.shift = 0; walk(); }
+    const vis = F.raw.slice(-F.N - 1);
+    let lo = Infinity, hi = -Infinity; vis.forEach((v,i) => { lo = Math.min(lo, F.flo[F.flo.length - vis.length + i]); hi = Math.max(hi, v); });
+    F.lo += ((lo * .97) - F.lo) * Math.min(1, dt * 2); F.hi += ((hi * 1.02) - F.hi) * Math.min(1, dt * 2);
+    const rng = Math.max(.001, F.hi - F.lo), off = F.raw.length - F.N - 1;
+    for (let i = 0; i < F.N; i++){ F.P[i] = (F.raw[off + i] - F.lo) / rng; F.F[i] = (F.flo[off + i] - F.lo) / rng; F.B[i] = F.buy[off + i]; }
+    F.last = lerp((F.raw[F.raw.length - 2] - F.lo) / rng, (F.raw[F.raw.length - 1] - F.lo) / rng, F.shift);
+    // draw
+    D.t += dt;
+    if (D.phase === 'fill'){ D.pot = Math.min(1, D.pot + dt / 5.5); D.glow = Math.max(0, D.glow - dt * .8); if (D.pot >= 1){ D.phase = 'pulse'; D.t = 0; let x = R(); D.winner = D.cum.findIndex(c => x < c); if (D.winner < 0) D.winner = D.n - 1; } }
+    else if (D.phase === 'pulse'){ D.pulse = Math.min(1, D.t / 1.3); if (D.pulse >= 1){ D.phase = 'win'; D.t = 0; D.glow = 1; D.last = addr(); D.lastSol = (.12 + R() * .5); D.lastOdds = (D.bal[D.winner] / D.tot * 100).toFixed(1) + '% odds'; } }
+    else { if (D.t > 2.4){ D.phase = 'fill'; D.t = 0; D.pot = 0; D.pulse = 0; } }
+    // graduate
+    const G = S.grad; G.t += dt;
+    if (G.phase === 'run'){ if (G.t > .55){ G.t = 0; G.fill = Math.min(1, G.fill + .02 + R() * .04); G.cranks++; if (G.fill >= 1){ G.phase = 'done'; } } G.grad = Math.max(0, G.grad - dt); }
+    else { G.grad = Math.min(1, G.grad + dt * 1.2); if (G.t > 3.6){ G.phase = 'run'; G.t = 0; G.fill = .06; G.cranks = 1; } }
+  }
+  if (reduce){ for (let i = 0; i < 200; i++) step(.05); S.draw.pot = .62; S.grad.fill = .71; S.grad.grad = 0; S.grad.phase = 'run'; }
+  // HUD
+  const H = id => document.getElementById(id);
+  function hud(){
+    const b = S.burn, D = S.draw, G = S.grad;
+    H('h-sup') && (H('h-sup').textContent = (b.supply / 1e6).toFixed(2) + 'M');
+    H('h-burn') && (H('h-burn').textContent = (b.burned / 1e6).toFixed(2) + 'M');
+    H('h-last') && (H('h-last').textContent = b.last);
+    H('h-fl') && (H('h-fl').textContent = Math.round(F.dist * 100) + '% under');
+    H('h-fb') && (H('h-fb').textContent = String(F.buys));
+    const offHigh = Math.max(0, (1 - F.raw[F.raw.length-1] / F.ath) * 100);
+    H('h-off') && (H('h-off').textContent = '−' + offHigh.toFixed(1) + '%');
+    H('h-pot') && (H('h-pot').textContent = (D.pot * .42).toFixed(3) + ' SOL');
+    const mins = D.phase === 'fill' ? Math.max(0, Math.ceil((1 - D.pot) * 60)) : 0;
+    H('h-next') && (H('h-next').textContent = D.phase === 'fill' ? mins + ' min' : 'Drawing');
+    H('h-lw') && (H('h-lw').textContent = D.last);
+    H('h-cv') && (H('h-cv').textContent = Math.round(G.fill * 100) + '%');
+    H('h-cr') && (H('h-cr').textContent = String(G.cranks));
+    H('h-cp') && (H('h-cp').textContent = G.phase === 'done' ? 'Being paid' : 'Not yet');
+    H('tv-win') && (H('tv-win').textContent = D.last + (D.lastSol ? ' · +' + D.lastSol.toFixed(2) + ' SOL' : ''));
+    H('tv-fill') && (H('tv-fill').textContent = 'Curve ' + Math.round(G.fill * 100) + '%');
+  }
+  return { S, step, hud };
+})();
+
+/* ---------------- kit steps (markup) ---------------- */
+(function(){
+  const host = $('#kits');
+  const html = KITS.map((k,i) => `<section class="step" data-stage="${i+2}" id="kit-${k.id}">
+    <div class="wrap"><div class="panel">
+      <div class="kithead">${markSVG(i, 'class="svgmark" aria-hidden="true"')}<span class="kick">Kit</span></div>
+      <h2 class="kitname">${k.name}</h2>
+      <p class="one">${k.line}</p>
+      <p class="body">${k.body}</p>
+      <div class="hudwrap"><span class="sim">Simulated</span><div class="hud">${k.hud.map(([l,id,c]) => `<div><span>${l}</span><b id="${id}" class="${c||''}">—</b></div>`).join('')}</div></div>
+      <div class="sets">${k.sets.map(s => `<span class="chip">${s}</span>`).join('')}</div>
+      <div class="not"><b>Not this</b><span>${k.not}</span></div>
+    </div></div></section>`).join('');
+  host.insertAdjacentHTML('afterend', html);
+  Sim.hud();
+})();
+
+/* ---------------- route calculator ---------------- */
+const Calc = (() => {
+  const inp = $('#feeIn'); let v = 1;
+  function upd(){
+    const n = parseFloat(String(inp.value).replace(',', '.'));
+    inp.classList.toggle('bad', !(n >= 0)); v = n > 0 ? n : 0;
+    [['vK',.8],['vT',.15],['vP',.05]].forEach(([id,k]) => $('#'+id).textContent = fmtSol(v*k));
+    [['tv-r0',.8],['tv-r1',.15],['tv-r2',.05]].forEach(([id,k]) => $('#'+id).textContent = fmtSol(v*k) + ' SOL');
+    $$('#pre button').forEach(b => b.classList.toggle('on', parseFloat(b.dataset.v) === n));
+  }
+  inp.addEventListener('input', upd);
+  $$('#pre button').forEach(b => b.addEventListener('click', () => { inp.value = Number(b.dataset.v).toFixed(2); upd(); }));
+  upd();
+  return { get v(){ return v; } };
+})();
+
+/* ---------------- router ---------------- */
+const VIEWS = ['home','explore','launch','docs'];
+const HOME_ANCHORS = ['kits','route','token','dialpreview'];
+let currentView = 'home';
+function route(){
+  const h = (location.hash || '#home').slice(1);
+  const view = VIEWS.includes(h) ? h : (h.startsWith('d-') ? 'docs' : 'home');
+  VIEWS.forEach(v => { $('#v-'+v).hidden = v !== view; });
+  document.body.classList.toggle('sub', view !== 'home');
+  $$('.nav a').forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#'+view ? 'page' : 'false'));
+  $('#drawer').hidden = true; $('#menuBtn').setAttribute('aria-expanded','false');
+  currentView = view;
+  $('#top').classList.toggle('on', scrollY > 24 || view !== 'home');
+  if (HOME_ANCHORS.includes(h)){
+    const el = h === 'kits' ? $('#kit-burn') : document.getElementById(h);
+    requestAnimationFrame(() => el?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: h === 'dialpreview' ? 'start' : 'center' }));
+  } else if (h.startsWith('d-')) requestAnimationFrame(() => document.getElementById(h)?.scrollIntoView());
+  else window.scrollTo(0,0);
+  document.dispatchEvent(new CustomEvent('view', { detail: view }));
+}
+addEventListener('hashchange', route);
+$$('[data-go]').forEach(a => a.addEventListener('click', e => { if (location.hash === '#' + a.dataset.go){ e.preventDefault(); route(); } }));
+$('#menuBtn').addEventListener('click', () => { const d = $('#drawer'); d.hidden = !d.hidden; $('#menuBtn').setAttribute('aria-expanded', String(!d.hidden)); $('#top').classList.add('on'); });
+addEventListener('scroll', () => $('#top').classList.toggle('on', scrollY > 24 || currentView !== 'home'), { passive: true });
+
+/* ================================================================
+   STAGE · WebGL
+   ================================================================ */
+const Stage = (() => {
+  const canvas = $('#gl');
+  const T = window.THREE;
+  if (!T) return null;
+  let renderer;
+  try {
+    renderer = new T.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance', alpha: false });
+  } catch(e){ return null; }
+  if (!renderer.getContext()) return null;
+  document.documentElement.classList.add('gl');
+
+  const small = Math.min(innerWidth, innerHeight) < 700 || (navigator.hardwareConcurrency || 8) <= 4;
+  const N = small ? 15000 : 34000;
+  let DPR = Math.min(devicePixelRatio || 1, small ? 1.5 : (innerWidth * (devicePixelRatio || 1) > 2900 ? 1.5 : 1.75));
+  renderer.setPixelRatio(DPR);
+  const POST = !!(T.EffectComposer && T.RenderPass && T.ShaderPass && T.UnrealBloomPass);
+  renderer.setClearColor(0x000000, 1);
+  if (!POST){ renderer.toneMapping = T.ACESFilmicToneMapping; renderer.outputEncoding = T.sRGBEncoding; }
+
+  const scene = new T.Scene();
+  const camera = new T.PerspectiveCamera(30, 1, .1, 120);
+
+  /* studio environment for metal reflections */
+  (function(){
+    const pm = new T.PMREMGenerator(renderer);
+    const env = new T.Scene();
+    env.add(new T.Mesh(new T.SphereGeometry(30, 24, 12), new T.MeshBasicMaterial({ color: new T.Color(.004,.0042,.005), side: T.BackSide })));
+    const strip = (w, h, k, p, c = [1,1,1]) => { const m = new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshBasicMaterial({ color: new T.Color(c[0]*k, c[1]*k, c[2]*k), side: T.DoubleSide })); m.position.set(...p); m.lookAt(0,0,0); env.add(m); };
+    strip(16, .45, 5.0, [0, 9, 1]);
+    strip(16, .3, 2.2, [0, 7, -6]);
+    strip(.4, 12, 3.0, [-10, 1, 3]);
+    strip(.35, 12, 2.0, [10, 0, 1]);
+    strip(3, 3, .35, [3, 3, 11]);
+    strip(12, 3, .26, [0, 6, 10]);
+    strip(12, .5, 1.2, [0, -8, 4], [1, .42, .18]);
+    scene.environment = pm.fromScene(env, .025).texture;
+    pm.dispose();
+  })();
+  const key = new T.DirectionalLight(0xffffff, 1.3); key.position.set(-6, 7, 3); scene.add(key);
+  const rim = new T.DirectionalLight(0xbfd0ff, 1.1); rim.position.set(4, 5, -6); scene.add(rim);
+  scene.add(new T.HemisphereLight(0x9aa3b5, 0x050506, .12));
+
+  /* ---------- the mark ---------- */
+  const bgU = { uRes: { value: new T.Vector2(1,1) }, uGlow: { value: new T.Vector2(.5,.3) }, uGlowK: { value: .03 } };
+  const bgQuad = new T.Mesh(new T.PlaneGeometry(2, 2), new T.ShaderMaterial({
+    uniforms: bgU, depthTest: false, depthWrite: false,
+    vertexShader: 'void main(){ gl_Position = vec4(position.xy, .9999, 1.0); }',
+    fragmentShader: 'uniform vec2 uRes; uniform vec2 uGlow; uniform float uGlowK; void main(){ vec2 uv = gl_FragCoord.xy/uRes; vec2 asp = vec2(uRes.x/uRes.y, 1.0); vec2 cc = uv - .5; float gd = length((uv - uGlow)*asp); vec3 bg = vec3(.0032,.0034,.0044) + vec3(.008,.0075,.009)*(1.0 - smoothstep(0.0,1.25,length(cc*asp))); bg += vec3(1.0,.24,.06)*uGlowK*exp(-gd*gd*5.0); gl_FragColor = vec4(bg, 1.0); }'
+  }));
+  bgQuad.frustumCulled = false; bgQuad.renderOrder = -10; scene.add(bgQuad);
+  const mark = new T.Group(); scene.add(mark);
+  const RAD = 1, GAP = .12, BEV = .035, DEPTH = .34;
+  const SIGNS = [[1,1],[1,-1],[-1,-1],[-1,1]]; // TR burn, BR floor, BL draw, TL graduate (y up)
+  const lin = h => new T.Color(h).convertSRGBToLinear();
+  const C_BLACK = lin('#121418'), C_SIG = lin('#FF4A1C'), C_EMI = new T.Color(1.0, .12, .02);
+  const quads = SIGNS.map(([sx, sy]) => {
+    const r = RAD - BEV, h = (GAP + 2*BEV)/2, ye = Math.sqrt(r*r - h*h);
+    const s = new T.Shape();
+    s.moveTo(sx*h, sy*h); s.lineTo(sx*h, sy*ye);
+    const a0 = Math.atan2(sy*ye, sx*h), a1 = Math.atan2(sy*h, sx*ye);
+    s.absarc(0, 0, r, a0, a1, a1 < a0); s.lineTo(sx*h, sy*h);
+    const g = new T.ExtrudeGeometry(s, { depth: DEPTH, bevelEnabled: true, bevelThickness: .04, bevelSize: BEV, bevelSegments: 6, curveSegments: 80 });
+    g.translate(0, 0, -DEPTH/2);
+    const m = new T.MeshPhysicalMaterial({ color: C_BLACK.clone(), metalness: .9, roughness: .2, clearcoat: 1, clearcoatRoughness: .06, emissive: C_EMI.clone(), emissiveIntensity: 0, envMapIntensity: 1.5 });
+    const mesh = new T.Mesh(g, m); mesh.userData.lit = 0; mark.add(mesh); return mesh;
+  });
+  // light leaking through the cross
+  const coreMat = new T.ShaderMaterial({
+    uniforms: { uK: { value: 1 } },
+    vertexShader: 'varying vec3 vP; void main(){ vP = position; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }',
+    fragmentShader: 'uniform float uK; varying vec3 vP; void main(){ float d = max(abs(vP.x), abs(vP.y)); float k = 1.0 - smoothstep(.04, .9, d); vec3 col = mix(vec3(.9,.22,.05), vec3(3.4,1.55,.62), k*k); gl_FragColor = vec4(col*uK*(.45 + .75*k), 1.0); }'
+  });
+  const coreA = new T.Mesh(new T.BoxGeometry(RAD*1.82, GAP*.34, DEPTH*.5), coreMat);
+  const coreB = new T.Mesh(new T.BoxGeometry(GAP*.34, RAD*1.82, DEPTH*.5), coreMat);
+  mark.add(coreA, coreB);
+  const inner = new T.PointLight(0xff6a30, .7, 2.0, 2); inner.position.set(0, 0, .5); mark.add(inner);
+
+  /* ---------- particles ---------- */
+  const geo = new T.BufferGeometry();
+  const aS = new Float32Array(N*4), aT = new Float32Array(N*4);
+  for (let i = 0; i < N*4; i++){ aS[i] = Math.random(); aT[i] = Math.random(); }
+  geo.setAttribute('position', new T.BufferAttribute(new Float32Array(N*3), 3));
+  geo.setAttribute('aS', new T.BufferAttribute(aS, 4));
+  geo.setAttribute('aT', new T.BufferAttribute(aT, 4));
+  const U = {
+    uTime:{value:0}, uFrom:{value:0}, uTo:{value:1}, uMix:{value:0}, uPR:{value:DPR}, uSize:{value:2.4}, uAlpha:{value:1},
+    uCenter:{value:new T.Vector3()}, uScale:{value:1}, uHW:{value:5}, uHH:{value:3}, uMark:{value:new T.Matrix4()}, uLit:{value:0},
+    uE0:{value:new T.Vector3()}, uE1:{value:new T.Vector3()}, uE2:{value:new T.Vector3()}, uS0:{value:new T.Vector3()},
+    uP:{value:Sim.S.floor.P}, uF:{value:Sim.S.floor.F}, uB:{value:Sim.S.floor.B}, uShift:{value:0}, uChart:{value:new T.Vector4()},
+    uBal:{value:Sim.S.draw.cum}, uRad:{value:Sim.S.draw.rad}, uWinner:{value:0}, uPulse:{value:0}, uPot:{value:0}, uWinGlow:{value:0}, uRingR:{value:2.4}, uRadK:{value:1}, uDense:{value:1},
+    uFill:{value:.3}, uGrad:{value:0}, uCurve:{value:new T.Vector4()}, uBurst:{value:0}
+  };
+  const VS = `
+precision highp float;
+uniform float uRadK, uDense;
+uniform float uTime,uFrom,uTo,uMix,uPR,uSize,uAlpha,uScale,uHW,uHH,uLit,uShift,uWinner,uPulse,uPot,uWinGlow,uRingR,uFill,uGrad,uBurst;
+uniform vec3 uCenter,uE0,uE1,uE2,uS0;
+uniform mat4 uMark;
+uniform vec4 uChart,uCurve;
+uniform vec4 uP[12]; uniform vec4 uF[12]; uniform vec4 uB[12];
+uniform vec4 uBal[4]; uniform vec4 uRad[4];
+attribute vec4 aS; attribute vec4 aT;
+varying vec3 vC; varying float vA;
+#define TAU 6.28318530718
+const vec3 WARM = vec3(1.0,.80,.60);
+const vec3 HOT = vec3(2.4,.36,.07);
+const vec3 WHITE = vec3(1.05,1.0,.95);
+const vec3 GREY = vec3(.40,.42,.48);
+float h11(float n){ return fract(sin(n*127.1+311.7)*43758.5453123); }
+vec3 bez(vec3 a, vec3 b, vec3 c, float t){ float u = 1.0-t; return u*u*a + 2.0*u*t*b + t*t*c; }
+float pick(vec4 v, int c){ if (c == 0) return v.x; if (c == 1) return v.y; if (c == 2) return v.z; return v.w; }
+float gP(int i){ int q = i/4; return pick(uP[q], i - q*4); }
+float gF(int i){ int q = i/4; return pick(uF[q], i - q*4); }
+float gB(int i){ int q = i/4; return pick(uB[q], i - q*4); }
+float gBal(int i){ int q = i/4; return pick(uBal[q], i - q*4); }
+float gRad(int i){ int q = i/4; return pick(uRad[q], i - q*4); }
+float sP(float u){ float f = clamp(u,0.0,1.0)*47.0; float i = floor(f); int a = int(i); int b = a+1; if (b > 47) b = 47; return mix(gP(a), gP(b), f-i); }
+float sF(float u){ return gF(int(floor(clamp(u,0.0,1.0)*47.0+.5))); }
+float sB(float u){ return gB(int(floor(clamp(u,0.0,1.0)*47.0+.5))); }
+void dust(out vec3 p, out vec3 c, out float s, out float a){
+  p = vec3((aS.x*2.0-1.0)*uHW*1.3, (aS.y*2.0-1.0)*uHH*1.3, -10.0 + aS.z*11.0);
+  p.xy += vec2(sin(uTime*.05 + aT.x*TAU), cos(uTime*.043 + aT.y*TAU))*.35;
+  c = vec3(.55,.58,.66); s = .5 + aT.z*.55; a = .16 + .3*aT.y;
+}
+void fHero(out vec3 p, out vec3 c, out float s, out float a){
+  if (aT.w < .14){ dust(p,c,s,a); return; }
+  float f = floor(aS.y*46.0);
+  float h1 = h11(f), h2 = h11(f+17.0), h3 = h11(f+41.0);
+  float ang = (f + h1*.8)/46.0*TAU;
+  vec3 C = uCenter;
+  vec3 P0 = vec3(C.x + cos(ang)*uHW*(1.15+.5*h2), C.y + sin(ang)*uHH*(1.25+.7*h3), -7.0 + 8.0*h2);
+  vec3 d = C - P0;
+  vec3 sd = normalize(vec3(-d.y, d.x, .001));
+  float bend = (.22 + .3*h3)*(h1 < .78 ? 1.0 : -1.0);
+  vec3 P1 = P0 + d*.48 + sd*bend*length(d) + vec3(0.0,0.0,(h1-.5)*4.0);
+  float t = fract(aS.x + uTime*(.03 + .03*h2));
+  float e = t*t*(1.7-.7*t);
+  p = bez(P0,P1,C,e);
+  float w = .32*(1.0-e)*(1.0-e) + .01;
+  p += (aT.xyz-.5)*w;
+  a = smoothstep(0.0,.2,t)*(1.0-smoothstep(.9,.995,t));
+  c = mix(WARM*.6, HOT*.8, smoothstep(.6,1.0,e));
+  s = mix(.8,1.25,e);
+}
+void fRoute(out vec3 p, out vec3 c, out float s, out float a){
+  if (aT.w < .08){ dust(p,c,s,a); return; }
+  float t = fract(aS.x + uTime*(.06 + .02*aS.z));
+  vec3 C = uCenter;
+  float br = aS.y < .8 ? 0.0 : (aS.y < .95 ? 1.0 : 2.0);
+  vec3 E = br < .5 ? uE0 : (br < 1.5 ? uE1 : uE2);
+  if (t < .5){
+    float q = t/.5;
+    p = mix(uS0, C, q);
+    float w = .46*(1.0 - q*.82);
+    p.y += (aT.x-.5)*w + sin(p.x*1.2 + uTime*1.1 + aT.y*2.0)*.035;
+    p.z += (aT.y-.5)*w;
+    c = WARM*.78; s = 1.0; a = smoothstep(0.0,.1,q);
+  } else {
+    float q = (t-.5)/.5;
+    vec3 M = vec3(C.x + (E.x-C.x)*.42, C.y, 0.0);
+    p = bez(C, M, E, q);
+    float w = (br<.5 ? .36 : br<1.5 ? .13 : .05)*(.2 + .8*smoothstep(0.0,.35,q));
+    p.y += (aT.x-.5)*w; p.z += (aT.y-.5)*w;
+    c = br<.5 ? HOT : (br<1.5 ? WHITE : GREY*1.5);
+    s = br<.5 ? 1.12 : .95; a = 1.0 - smoothstep(.9,1.0,q);
+  }
+}
+void fBurn(out vec3 p, out vec3 c, out float s, out float a){
+  if (aT.w < .06){ dust(p,c,s,a); return; }
+  float life = fract(aS.x + uTime*(.11 + .09*aS.z));
+  float r = sqrt(mix(.05,.86,aT.x));
+  float base = uLit < .5 ? 0.0 : (uLit < 1.5 ? -1.5707963 : (uLit < 2.5 ? 3.14159265 : 1.5707963));
+  float ang = base + mix(.08,1.49,aT.y);
+  vec3 w0 = (uMark*vec4(cos(ang)*r, sin(ang)*r, .2, 1.0)).xyz;
+  float H = (2.8 + 2.4*aS.y)*uScale;
+  vec3 drift = vec3(sin(uTime*.9 + aS.y*12.0 + life*4.0), 0.0, cos(uTime*.7 + aS.z*9.0 + life*3.0))*(.12 + .95*life*life)*uScale;
+  p = w0 + vec3(0.0, life*H, 0.0) + drift;
+  vec3 white = vec3(2.0,1.05,.45)*(1.0+uBurst*.5);
+  c = life < .12 ? mix(white, HOT, life/.12) : mix(HOT, vec3(.3,.025,.01), smoothstep(.12,1.0,life));
+  s = mix(1.7,.35,life)*(1.0+uBurst*.25);
+  a = smoothstep(0.0,.04,life)*(1.0-smoothstep(.5,1.0,life));
+}
+void fFloor(out vec3 p, out vec3 c, out float s, out float a){
+  if (aT.w < .06){ dust(p,c,s,a); return; }
+  float u = aS.x;
+  float x = mix(uChart.x, uChart.y, u);
+  float su = u + uShift/47.0;
+  float pr = uChart.z + sP(su)*uChart.w;
+  float fl = uChart.z + sF(su)*uChart.w;
+  float k = aS.y;
+  if (k < .5){ p = vec3(x, pr + (aT.x-.5)*.035, (aT.y-.5)*.1); c = WARM*.95; s = .95; a = .95; }
+  else if (k < .8){ p = vec3(x, fl + (aT.x-.5)*.03, (aT.y-.5)*.1); c = HOT*.85; s = 1.05; a = 1.0; }
+  else { float yy = mix(fl, pr, aT.x); p = vec3(x, yy, (aT.y-.5)*.35); c = vec3(.5,.5,.56); s = .6; a = .2; }
+  float bb = sB(su);
+  if (bb > .5 && k > .73 && k < .8){ p.y = fl + aT.z*.55; p.x += (aT.x-.5)*.08; c = HOT*2.0; s = 1.6; }
+  a *= smoothstep(0.0,.1,u);
+}
+vec3 clusterC(float i){ float ang = i/14.0*TAU + uTime*.05; return uCenter + vec3(cos(ang), sin(ang)*.36, sin(ang)*.62)*uRingR; }
+void fDraw(out vec3 p, out vec3 c, out float s, out float a){
+  if (aT.w < .06){ dust(p,c,s,a); return; }
+  float k = aS.y;
+  if (k < .14){
+    float o = aT.x*TAU + uTime*(.5 + aT.y*.6);
+    vec3 orb = vec3(cos(o), sin(o)*.35, sin(o + aT.z*3.0)*.6)*(1.3 + .3*aT.z)*uScale;
+    vec3 W = clusterC(uWinner);
+    float m = smoothstep(0.0,1.0,clamp(uPulse*1.7 - aT.z*.7, 0.0, 1.0));
+    p = mix(uCenter + orb, W + (aT.xyz-.5)*.18, m);
+    c = HOT*1.15; s = 1.15;
+    a = max(step(aS.z, uPot), m) * (1.0 - smoothstep(.0,.6, uWinGlow)*step(.99,uPulse));
+  } else {
+    float kk = (k-.14)/.86; float idx = 13.0;
+    for (int i = 0; i < 14; i++){ if (kk < gBal(i)){ idx = float(i); break; } }
+    vec3 cc = clusterC(idx);
+    float rr = gRad(int(idx))*uRadK;
+    vec3 j = normalize(aT.xyz - .5 + 1e-4)*pow(aS.z,.55)*rr;
+    j += vec3(sin(uTime*.6 + aS.x*20.0), cos(uTime*.5 + aS.z*17.0), 0.0)*.02;
+    p = cc + j;
+    float isW = 1.0 - step(.5, abs(idx - uWinner));
+    float g = isW*max(uWinGlow, smoothstep(.85,1.0,uPulse));
+    c = mix(WARM*.8, HOT*1.5, g); s = .9 + g*.6; a = .85 - .3*(1.0 - uRadK);
+  }
+}
+void fGrad(out vec3 p, out vec3 c, out float s, out float a){
+  if (aT.w < .06){ dust(p,c,s,a); return; }
+  float k = aS.y;
+  if (k < .36){
+    float u = fract(aS.x + uTime*.03);
+    p = vec3(mix(uCurve.x,uCurve.z,u), uCurve.y + (uCurve.w-uCurve.y)*pow(u,1.9), 0.0);
+    p.y += (aT.x-.5)*.03; p.z += (aT.y-.5)*.06;
+    float on = step(u, uFill);
+    c = mix(GREY, mix(WARM, HOT, uGrad), on); s = .95; a = mix(.32, 1.0, on);
+  } else if (k < .9){
+    float u = aS.x*uFill;
+    float top = uCurve.y + (uCurve.w-uCurve.y)*pow(u,1.9);
+    p = vec3(mix(uCurve.x,uCurve.z,u), mix(uCurve.y, top, pow(aT.x,.7)), (aT.y-.5)*.35);
+    float edge = smoothstep(.85,1.0, aS.x);
+    c = mix(WARM*.5, HOT*.85, .3 + .7*max(uGrad, edge)); s = .7 + edge*.4; a = .55*smoothstep(0.0,.05,uFill);
+  } else {
+    float ang = aS.x*TAU + uTime*.2;
+    float R = (1.3 + uGrad*.9 + aT.x*.14)*uScale;
+    p = uCenter + vec3(cos(ang)*R, sin(ang)*R, (aT.y-.5)*.1);
+    c = HOT*1.5; s = 1.1; a = uGrad*(1.0 - smoothstep(.7,1.0,uGrad)*.6);
+  }
+}
+void form(float id, out vec3 p, out vec3 c, out float s, out float a){
+  if (id < .5) fHero(p,c,s,a);
+  else if (id < 1.5) fRoute(p,c,s,a);
+  else if (id < 2.5) fBurn(p,c,s,a);
+  else if (id < 3.5) fFloor(p,c,s,a);
+  else if (id < 4.5) fDraw(p,c,s,a);
+  else if (id < 5.5) fGrad(p,c,s,a);
+  else fHero(p,c,s,a);
+}
+void main(){
+  vec3 p, c; float s, a;
+  form(uFrom, p, c, s, a);
+  if (uMix > .0001){
+    vec3 p2, c2; float s2, a2;
+    form(uTo, p2, c2, s2, a2);
+    float m = clamp((uMix - aS.w*.4)/.6, 0.0, 1.0); m = m*m*(3.0-2.0*m);
+    float sw = sin(m*3.14159265);
+    p = mix(p, p2, m) + vec3(sin(aS.x*40.0 + uTime*.8), cos(aS.y*37.0 + uTime*.7), sin(aS.z*31.0 + uTime*.6))*sw*.6;
+    c = mix(c, c2, m); s = mix(s, s2, m); a = mix(a, a2, m);
+  }
+  vec4 mv = viewMatrix*vec4(p, 1.0);
+  gl_Position = projectionMatrix*mv;
+  gl_PointSize = uSize*s*uPR*(12.0/max(.5,-mv.z));
+  vC = c; vA = a*uAlpha*uDense;
+}`;
+  const FS = `
+precision highp float;
+varying vec3 vC; varying float vA;
+void main(){
+  vec2 d = gl_PointCoord - .5; float r = length(d);
+  if (r > .5 || vA < .003) discard;
+  float k = 1.0 - r*2.0;
+  gl_FragColor = vec4(vC, k*k*vA);
+}`;
+  const pmat = new T.ShaderMaterial({ uniforms: U, vertexShader: VS, fragmentShader: FS, transparent: true, depthWrite: false, blending: T.AdditiveBlending });
+  const points = new T.Points(geo, pmat); points.frustumCulled = false; scene.add(points);
+
+  /* ---------- post ---------- */
+  let composer = null, bloom = null, fin = null;
+  if (POST){
+    const ex = n => !!renderer.extensions.get(n);
+    const canHalf = renderer.capabilities.isWebGL2 ? (ex('EXT_color_buffer_float') || ex('EXT_color_buffer_half_float')) : (ex('OES_texture_half_float') && ex('EXT_color_buffer_half_float'));
+    const RTC = (renderer.capabilities.isWebGL2 && T.WebGLMultisampleRenderTarget) ? T.WebGLMultisampleRenderTarget : T.WebGLRenderTarget;
+    const rt = new RTC(4, 4, { type: canHalf ? T.HalfFloatType : T.UnsignedByteType, format: T.RGBAFormat, minFilter: T.LinearFilter, magFilter: T.LinearFilter });
+    if (rt.samples !== undefined) rt.samples = window.__telosTest ? 0 : (small ? 2 : 4);
+    composer = new T.EffectComposer(renderer, rt);
+    composer.addPass(new T.RenderPass(scene, camera));
+    bloom = new T.UnrealBloomPass(new T.Vector2(256, 256), .9, .25, .6);
+    if (bloom.compositeMaterial) bloom.compositeMaterial.uniforms.bloomFactors.value = [1.0, .7, .3, .03, 0.0];
+    composer.addPass(bloom);
+    fin = new T.ShaderPass({
+      uniforms: { tDiffuse:{value:null}, uRes:{value:new T.Vector2(1,1)}, uTime:{value:0}, uGlow:{value:new T.Vector2(.5,.3)}, uGlowK:{value:.05}, uExp:{value:1.0} },
+      vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+      fragmentShader: `
+precision highp float;
+uniform sampler2D tDiffuse; uniform vec2 uRes; uniform float uTime; uniform vec2 uGlow; uniform float uGlowK; uniform float uExp;
+varying vec2 vUv;
+vec3 aces(vec3 x){ return clamp((x*(2.51*x+.03))/(x*(2.43*x+.59)+.14), 0.0, 1.0); }
+float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898,78.233)))*43758.5453); }
+void main(){
+  vec2 uv = vUv; vec2 cc = uv - .5;
+  vec2 asp = vec2(uRes.x/uRes.y, 1.0);
+  float ca = dot(cc,cc)*.0055;
+  vec3 col = vec3(texture2D(tDiffuse, uv + cc*ca).r, texture2D(tDiffuse, uv).g, texture2D(tDiffuse, uv - cc*ca).b);
+  col = aces(col*uExp);
+  col = pow(col, vec3(1.0/2.2));
+  float v = smoothstep(1.2,.3,length(cc*vec2(1.0,.95))*1.3);
+  col *= mix(.7, 1.0, v);
+  col += (hash(uv*uRes + fract(uTime*7.0)*91.0) - .5)*.03;
+  gl_FragColor = vec4(col, 1.0);
+}`
+    });
+    composer.addPass(fin);
+  }
+
+  /* ---------- layout ---------- */
+  let W = 1, H = 1, hw = 5, hh = 3, dist = 12, mobile = false;
+  const L = {}; // layout-derived anchors
+  let lastW = 0, lastH = 0;
+  function layout(force){
+    const cw = canvas.clientWidth || innerWidth, ch = canvas.clientHeight || innerHeight;
+    if (!force && cw === lastW && Math.abs(ch - lastH) < 140 && lastW){ anchors(); return; }
+    lastW = cw; lastH = ch;
+    W = cw; H = ch;
+    mobile = W < 760;
+    const aspect = W / H, tan = Math.tan(15 * Math.PI / 180);
+    dist = Math.max(12, (mobile ? 3.25 : 4.6) / (tan * aspect));
+    hh = dist * tan; hw = hh * aspect;
+    camera.aspect = aspect; camera.position.set(0, 0, dist); camera.lookAt(0, 0, 0); camera.updateProjectionMatrix();
+    renderer.setSize(W, H, false);
+    if (composer){ composer.setPixelRatio(DPR); composer.setSize(W, H); fin.uniforms.uRes.value.set(W*DPR, H*DPR); }
+    bgU.uRes.value.set(W*DPR, H*DPR);
+    U.uHW.value = hw; U.uHH.value = hh; U.uPR.value = DPR;
+    U.uSize.value = (mobile ? 2.6 : 2.4) * (dist / 12);
+    // visual region (right of the text column on desktop, upper area on mobile)
+    if (mobile){
+      L.x0 = -hw * .92; L.x1 = hw * .92; L.cy = hh * .4;
+    } else {
+      const wrapEl = $('.step .wrap');
+      const wr = wrapEl ? wrapEl.getBoundingClientRect() : { left: W * .07 };
+      const right = wr.left + Math.min(470, W * .4) + 24;
+      L.x0 = (right / W * 2 - 1) * hw; L.x1 = hw * .94; L.cy = 0;
+    }
+    L.vw = L.x1 - L.x0; L.vc = (L.x0 + L.x1) / 2;
+    anchors();
+  }
+
+  /* ---------- scroll → stage ---------- */
+  let A = [];
+  function anchors(){
+    A = $$('#v-home [data-stage]').map(el => { const r = el.getBoundingClientRect(); const top = r.top + scrollY; return { s: +el.dataset.stage, c: el.classList.contains('hero') ? H * .5 + 1 : (mobile ? top + H * .52 : top + r.height * .5) }; }).sort((a,b) => a.s - b.s);
+  }
+  function stageTarget(){
+    if (currentView !== 'home') return 6;
+    if (!A.length) return 0;
+    const vc = scrollY + H * .5;
+    if (vc <= A[0].c) return 0;
+    for (let i = 0; i < A.length - 1; i++){
+      if (vc < A[i+1].c){ const f = (vc - A[i].c) / (A[i+1].c - A[i].c); return A[i].s + sstep(.2, .8, f) * (A[i+1].s - A[i].s); }
+    }
+    return A[A.length-1].s;
+  }
+
+  /* ---------- mark keyframes ---------- */
+  const tmpV = new T.Vector3();
+  function slotKey(){
+    const el = $('#oslot'); if (!el) return null;
+    const r = el.getBoundingClientRect();
+    const nx = (r.left + r.width/2) / W * 2 - 1, ny = -((r.top + r.height/2) / H * 2 - 1);
+    const rw = (r.height / 2) / H * 2 * hh;
+    return { x: nx * hw, y: ny * hh, z: 0, s: rw * .93, rx: -.16, ry: .2, rz: 0 };
+  }
+  function K(i){
+    const m = mobile, F = Sim.S.floor;
+    switch(i){
+      case 0: return slotKey() || { x: 0, y: -hh*.4, z: 0, s: .8, rx: -.16, ry: .2, rz: 0 };
+      case 1: return m ? { x: L.x0 + L.vw*.3, y: L.cy, z: 0, s: .62, rx: -.2, ry: -.7, rz: 0 } : { x: L.x0 + L.vw*.16, y: 0, z: 0, s: .95, rx: -.22, ry: -.68, rz: 0 };
+      case 2: return m ? { x: 0, y: L.cy - 1.2, z: 0, s: .72, rx: -.95, ry: .3, rz: 0 } : { x: L.vc, y: -hh*.44, z: 0, s: .95, rx: -.95, ry: .32, rz: 0 };
+      case 3: { const c = U.uChart.value; return { x: c.y + (m ? .45 : .62), y: c.z + F.last * c.w, z: 0, s: m ? .34 : .42, rx: -.1, ry: -.35, rz: 0 }; }
+      case 4: return m ? { x: 0, y: L.cy, z: 0, s: .5, rx: .5, ry: 0, rz: 0 } : { x: L.vc, y: .1, z: 0, s: .72, rx: .5, ry: 0, rz: 0 };
+      case 5: { const c = U.uCurve.value; return { x: c.z + (m ? .35 : .5), y: c.w + (m ? .35 : .5), z: 0, s: m ? .36 : .46, rx: -.1, ry: -.3, rz: 0 }; }
+      default: return m ? { x: 0, y: L.cy, z: 0, s: .78, rx: -.2, ry: -.4, rz: 0 } : { x: L.vc + L.vw*.05, y: 0, z: 0, s: 1.0, rx: -.2, ry: -.45, rz: 0 };
+    }
+  }
+  const LIT = [[1,0,0,0],[1,0,0,0],[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1],[0,0,0,0]];
+
+  function setFormationUniforms(){
+    const m = mobile;
+    // route
+    const C = U.uCenter.value;
+    U.uS0.value.set(-hw * 1.15, (m ? L.cy : 0), 0);
+    const spread = m ? 1.25 : 1.85;
+    U.uE0.value.set(hw * 1.06, (m ? L.cy : 0) + spread, 0);
+    U.uE1.value.set(hw * 1.08, (m ? L.cy : 0) + .05, 0);
+    U.uE2.value.set(hw * 1.06, (m ? L.cy : 0) - spread, 0);
+    // floor chart
+    if (m) U.uChart.value.set(-hw*.9, hw*.55, L.cy - 1.35, 2.7);
+    else U.uChart.value.set(L.x0 + L.vw*.02, L.x0 + L.vw*.84, -hh*.42, hh*.95);
+    // graduate curve
+    if (m) U.uCurve.value.set(-hw*.9, L.cy - 1.7, hw*.5, L.cy + 1.25);
+    else U.uCurve.value.set(L.x0 + L.vw*.02, -hh*.62, L.x0 + L.vw*.8, hh*.48);
+    U.uRingR.value = m ? hw*.78 : Math.min(L.vw*.42, hh*.9);
+    U.uRadK.value = m ? .62 : 1;
+    U.uDense.value = m ? .62 : 1;
+    if (bloom) bloom.strength = m ? .62 : .9;
+  }
+
+  /* ---------- labels ---------- */
+  const tags = { r0: $('#tg-r0'), r1: $('#tg-r1'), r2: $('#tg-r2'), floor: $('#tg-floor'), price: $('#tg-price'), win: $('#tg-win'), fill: $('#tg-fill'), grad: $('#tg-grad') };
+  function place(el, v, op, dx = 0, dy = 0){
+    if (op < .01){ if (el.style.opacity !== '0') el.style.opacity = '0'; return; }
+    tmpV.copy(v).project(camera);
+    const x = (tmpV.x * .5 + .5) * W + dx, y = (-tmpV.y * .5 + .5) * H + dy;
+    el.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) translate(-50%,-50%)`;
+    el.style.left = '0'; el.style.top = '0';
+    el.style.opacity = op.toFixed(3);
+  }
+  const bz = (a, b, c, t, out) => { const u = 1 - t; return out.set(u*u*a.x + 2*u*t*b.x + t*t*c.x, u*u*a.y + 2*u*t*b.y + t*t*c.y, 0); };
+  const vA = new T.Vector3(), vB = new T.Vector3();
+  function labels(st){
+    const near = k => clamp(1 - Math.abs(st - k) * 2.6, 0, 1);
+    const C = U.uCenter.value;
+    // route
+    const r = near(1);
+    [['r0', U.uE0.value], ['r1', U.uE1.value], ['r2', U.uE2.value]].forEach(([k, E]) => {
+      vA.set(C.x + (E.x - C.x) * .42, C.y, 0);
+      bz(C, vA, E, mobile ? .62 : .7, vB);
+      place(tags[k], vB, r, 0, -22 - (k === 'r0' ? 6 : 0));
+    });
+    // floor
+    const f = near(3), ch = U.uChart.value, F = Sim.S.floor;
+    vA.set(ch.x + (ch.y - ch.x) * .5, ch.z + F.F[24] * ch.w, 0); place(tags.floor, vA, f, 0, 18);
+    vB.set(ch.y, ch.z + F.last * ch.w, 0); place(tags.price, vB, mobile ? 0 : f * .9, -10, -22);
+    // draw
+    const d = near(4), D = Sim.S.draw;
+    const ang = D.winner / 14 * Math.PI * 2 + U.uTime.value * .05;
+    vA.set(C.x + Math.cos(ang) * U.uRingR.value, C.y + Math.sin(ang) * .36 * U.uRingR.value - .45, Math.sin(ang) * .62 * U.uRingR.value);
+    place(tags.win, vA, d * (D.phase === 'win' ? Math.min(1, D.t * 3) * (1 - sstep(1.8, 2.4, D.t)) : 0));
+    // graduate
+    const g = near(5), G = Sim.S.grad, cv = U.uCurve.value;
+    const u = G.fill; vA.set(lerp(cv.x, cv.z, u), cv.y + (cv.w - cv.y) * Math.pow(u, 1.9), 0);
+    place(tags.fill, vA, g * (1 - G.grad), -54, -10);
+    vB.set(C.x, C.y - (mobile ? .9 : 1.15) * U.uScale.value * 1.6, 0); place(tags.grad, vB, g * sstep(.3, .8, G.grad));
+  }
+
+  /* ---------- loop ---------- */
+  let stage = 0, t0 = performance.now(), time = 12, raf = 0, running = false, frames = 0, ftAcc = 0, quality = 2, lastRender = 0;
+  const cur = { x: 0, y: 0, z: 0, s: 1, rx: 0, ry: 0, rz: 0 };
+  const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
+  addEventListener('pointermove', e => { pointer.tx = e.clientX / W - .5; pointer.ty = e.clientY / H - .5; }, { passive: true });
+  const veil = $('#veil'), solid = $('#solid');
+  let snapped = false, intro = (reduce || window.__telosTest) ? 1 : 0;
+
+  function frame(now){
+    raf = 0;
+    const dt = Math.min(.05, (now - t0) / 1000); t0 = now;
+    if (!reduce) time += dt;
+    intro = Math.min(1, intro + dt / 1.8);
+    const ia = sstep(0, 1, intro);
+    U.uAlpha.value = ia;
+    Sim.step(reduce ? 0 : dt);
+    if ((frames & 7) === 0) Sim.hud();
+
+    const target = stageTarget();
+    if (!snapped){ stage = target; snapped = true; }
+    stage += (target - stage) * (reduce ? 1 : Math.min(1, dt * 5.5));
+    if (Math.abs(target - stage) < .0005) stage = target;
+    const i = Math.min(5, Math.floor(stage + 1e-6)), f = clamp(stage - i, 0, 1);
+    const fe = f * f * (3 - 2 * f);
+    const fe0 = i === 5 ? fe : (stage >= 6 ? 1 : 0);
+
+    setFormationUniforms();
+    const a = K(i), b = K(Math.min(6, i + 1));
+    for (const k in cur) cur[k] = lerp(a[k], b[k], fe);
+    pointer.x += (pointer.tx - pointer.x) * Math.min(1, dt * 2.5); pointer.y += (pointer.ty - pointer.y) * Math.min(1, dt * 2.5);
+    const wob = reduce ? 0 : 1, heroK = 1 - clamp(stage, 0, 1);
+    mark.position.set(cur.x, cur.y, cur.z);
+    mark.scale.setScalar(cur.s);
+    mark.rotation.set(cur.rx + wob * Math.sin(time * .5) * .05 + pointer.y * .22, cur.ry + wob * Math.sin(time * .32) * (.14 - .06 * heroK) + pointer.x * .4, cur.rz);
+    mark.updateMatrixWorld(true);
+    U.uMark.value.copy(mark.matrixWorld);
+    U.uCenter.value.copy(mark.position); U.uScale.value = cur.s;
+
+    // lit quadrants
+    const la = LIT[i], lb = LIT[Math.min(6, i + 1)];
+    quads.forEach((q, k) => {
+      const tgt = lerp(la[k], lb[k], fe);
+      q.userData.lit += (tgt - q.userData.lit) * Math.min(1, dt * 6);
+      const l = q.userData.lit, mt = q.material;
+      mt.color.copy(C_BLACK).lerp(C_SIG, l);
+      mt.metalness = .9 - l * .8; mt.roughness = .22 + l * .2; mt.envMapIntensity = 1.5 - l * .9;
+      mt.emissiveIntensity = l * (.5 + (k === 0 ? (.25 + Sim.S.burn.burst * .4) * clamp(1 - Math.abs(stage - 2), 0, 1) : 0));
+    });
+    const litIdx = Math.max(0, la.indexOf(Math.max(...la)));
+
+    U.uLit.value = i === 2 ? 0 : litIdx;
+    coreMat.uniforms.uK.value = (.95 + .15 * Math.sin(time * 2.1) * wob + .9 * fe0) * (.15 + .85 * sstep(.25, 1, intro));
+    inner.intensity = .7;
+
+    // sims → uniforms
+    const S = Sim.S;
+    U.uShift.value = S.floor.shift;
+    U.uWinner.value = S.draw.winner; U.uPulse.value = S.draw.pulse; U.uPot.value = S.draw.pot; U.uWinGlow.value = S.draw.glow;
+    U.uFill.value = S.grad.fill; U.uGrad.value = S.grad.grad; U.uBurst.value = S.burn.burst;
+    U.uTime.value = time;
+    U.uFrom.value = i; U.uTo.value = Math.min(6, i + 1); U.uMix.value = f;
+
+    // camera parallax (off in the hero so the O stays locked to the wordmark)
+    const film = clamp(stage, 0, 1);
+    camera.position.set(pointer.x * .35 * film, -pointer.y * .22 * film, dist);
+    camera.lookAt(0, 0, 0);
+
+    // stage chrome
+    veil.style.opacity = (mobile ? 0 : clamp(stage - .35, 0, 1) * (currentView === 'home' ? 1 : 0)).toFixed(3);
+    if (fin){
+      tmpV.copy(mark.position).project(camera);
+      fin.uniforms.uTime.value = time;
+    }
+    tmpV.copy(mark.position).project(camera);
+    bgU.uGlow.value.set(tmpV.x * .5 + .5, tmpV.y * .5 + .5);
+    bgU.uGlowK.value = .03 + .015 * (i === 2 ? 1 - f : 0);
+    labels(currentView === 'home' ? stage : -9);
+
+    const t1 = performance.now();
+    if (composer) composer.render(); else renderer.render(scene, camera);
+    // adaptive quality
+    frames++; window.__fc = frames;
+    if (frames > 20 && frames <= 140) ftAcc += dt * 1000;
+    if (frames === 140){ const avg = ftAcc / 120; if (avg > 27 && quality > 0){ quality--; DPR = Math.max(1, DPR * .72); renderer.setPixelRatio(DPR); layout(true); geo.setDrawRange(0, Math.floor(N * .7)); } }
+    if (!reduce) schedule();
+  }
+  function covered(){
+    if (currentView !== 'home') return false;
+    const r = solid.getBoundingClientRect();
+    return r.top <= 0 && r.bottom >= H;
+  }
+  let visible = !document.hidden;
+  function schedule(){
+    if (raf || !visible) return;
+    if (covered()){ running = false; return; }
+    raf = requestAnimationFrame(frame);
+  }
+  document.addEventListener('visibilitychange', () => { visible = !document.hidden; t0 = performance.now(); schedule(); });
+  addEventListener('scroll', schedule, { passive: true });
+  addEventListener('resize', () => { layout(); schedule(); });
+  document.addEventListener('view', () => { setTimeout(() => { layout(true); schedule(); }, 30); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { anchors(); });
+  new ResizeObserver(() => anchors()).observe(document.body);
+  layout(true);
+  schedule();
+  window.__dbg = () => JSON.stringify({ t: stageTarget(), stage, A: A.map(a => [a.s, Math.round(a.c)]), sy: scrollY, H });
+  return { get stage(){ return stage; }, layout, snap(){ snapped = false; schedule(); } };
+})();
+if (!Stage) document.documentElement.classList.remove('gl');
+
+/* ---------------- explore ---------------- */
+const COINS = [
+  { n:'Ember', t:'EMBER', k:0, s:'4.81M burned', mc:41200, age:6, c:'#E9C9B8' },
+  { n:'Plinth', t:'PLNTH', k:1, s:'Floor 0.0000052 SOL · held', mc:28400, age:14, c:'#CFD6E2' },
+  { n:'Moth', t:'MOTH', k:2, s:'Last pot 0.31 SOL → 9Fq2…tR7c', mc:19800, age:23, c:'#D9D2C2' },
+  { n:'Ascent', t:'ASCNT', k:3, s:'Curve 71%', mc:52900, age:41, c:'#C9DCCF' },
+  { n:'Cinder', t:'CNDR', k:0, s:'1.09M burned', mc:9600, age:58, c:'#E3D3CB' },
+  { n:'Harbor', t:'HRBR', k:1, s:'Floor 0.0000019 SOL · 3 buys', mc:12300, age:95, c:'#C6D3DD' },
+  { n:'Lucky Frog', t:'LFROG', k:2, s:'Last pot 0.08 SOL → 3kPa…9wQe', mc:7400, age:130, c:'#CFDCC0' },
+  { n:'Kiln', t:'KILN', k:3, s:'Graduated · paying creator', mc:118000, age:290, c:'#E0D6C8' },
+  { n:'Ash', t:'ASH', k:0, s:'12.4M burned', mc:66100, age:420, c:'#D8D3D0' },
+  { n:'Keel', t:'KEEL', k:1, s:'Floor 0.0000071 SOL · 7 buys', mc:35800, age:610, c:'#CBD4D9' }
+];
+const usd = v => '$' + (v >= 1000 ? (v/1000).toFixed(v >= 100000 ? 0 : 1) + 'K' : v);
+const ago = m => m < 60 ? m + 'm' : m < 1440 ? Math.floor(m/60) + 'h' : Math.floor(m/1440) + 'd';
+function rowHTML(c){
+  return `<tr><td><div class="coin"><span class="av" style="background:${c.c}">${c.t.slice(0,2)}</span><div><b>${c.n}</b><small>$${c.t}</small></div></div></td>
+  <td><span class="kpill">${markSVG(c.k)}${KITS[c.k].name}</span></td><td class="stat">${c.s}</td><td class="num">${usd(c.mc)}</td><td class="num" style="color:var(--mute)">${ago(c.age)}</td></tr>`;
+}
+$('#homeRows').innerHTML = COINS.slice(0,5).map(rowHTML).join('');
+(function(){
+  let f = -1, q = '';
+  const fl = $('#exFilters');
+  fl.innerHTML = `<button type="button" class="on" data-f="-1">All</button>` + KITS.map((k,i) => `<button type="button" data-f="${i}">${k.name}</button>`).join('');
+  function draw(){
+    const rows = COINS.filter(c => (f < 0 || c.k === f) && (!q || (c.n + ' ' + c.t).toLowerCase().includes(q)));
+    $('#exRows').innerHTML = rows.length ? rows.map(rowHTML).join('') : `<tr><td colspan="5" style="padding:40px 18px;color:var(--mute)">No coins match “${q}”.</td></tr>`;
+    $('#exCount').textContent = `${rows.length} example coin${rows.length === 1 ? '' : 's'} on the dial.`;
+  }
+  $$('button', fl).forEach(b => b.addEventListener('click', () => { f = +b.dataset.f; $$('button', fl).forEach(x => x.classList.toggle('on', x === b)); draw(); }));
+  $('#exSearch').addEventListener('input', e => { q = e.target.value.trim().toLowerCase(); draw(); });
+  draw();
+})();
+
+/* ---------------- launch ---------------- */
+(function(){
+  const st = { mode:'new', kit:0, dev:0, img:null, slip:5, spend:.05, cap:'', dist:15 };
+  try { const s = JSON.parse(localStorage.getItem('telos-plan') || 'null'); if (s && typeof s === 'object') Object.assign(st, { kit: clamp(s.kit|0, 0, 3), slip: +s.slip || 5 }); } catch(e){}
+  const dial = $('#pickDial');
+  dial.innerHTML = Q.map(([sx,sy],i) => `<path d="${quadD(sx,sy)}" fill="currentColor" data-i="${i}"><title>${KITS[i].name}</title></path>`).join('');
+  $('#kitopts').innerHTML = KITS.map((k,i) => `<div class="kitopt"><input type="radio" name="kit" id="kit-opt-${k.id}" value="${i}"><label for="kit-opt-${k.id}"><b><i></i>${k.name}</b><span>${k.line}</span></label></div>`).join('');
+  $$('path', dial).forEach(p => p.addEventListener('click', () => setKit(+p.dataset.i)));
+  $$('input[name=kit]').forEach(r => r.addEventListener('change', () => setKit(+r.value)));
+  const SOL = v => v === '' || v == null ? 'Uncapped' : (+v).toString() + ' SOL';
+  function settingsHTML(){
+    const k = st.kit;
+    if (k === 2) return `<div class="f"><label>Payout</label><div class="in" style="display:flex;align-items:center;color:var(--mute)">Every hour, whole pot</div></div><div class="f"><label>Odds</label><div class="in" style="display:flex;align-items:center;color:var(--mute)">Weighted by balance</div></div>`;
+    const first = k === 1
+      ? `<div class="f"><label for="dist">Floor distance under the high</label><div class="unit"><input class="in" id="dist" inputmode="decimal" value="${st.dist}"><span>%</span></div><span class="hint">5–50%. The line only moves up.</span></div>`
+      : `<div class="f"><label for="spend">Spend above</label><div class="unit"><input class="in" id="spend" inputmode="decimal" value="${st.spend}"><span>SOL</span></div><span class="hint">Fees above this get spent each crank.</span></div>`;
+    return first + `<div class="f"><label for="cap">Max per crank <span style="color:var(--dim)">(optional)</span></label><div class="unit"><input class="in" id="cap" inputmode="decimal" value="${st.cap}" placeholder="Uncapped"><span>SOL</span></div><span class="hint">Leave empty for no cap.</span></div>`;
+  }
+  function bindSettings(){
+    $('#kitSettings').innerHTML = settingsHTML();
+    $('#spend')?.addEventListener('input', e => { st.spend = e.target.value; plan(); });
+    $('#cap')?.addEventListener('input', e => { st.cap = e.target.value; plan(); });
+    $('#dist')?.addEventListener('input', e => { st.dist = e.target.value; plan(); });
+  }
+  function setKit(i){
+    st.kit = i; $$('path', dial).forEach((p,j) => p.classList.toggle('on', j === i));
+    $(`#kit-opt-${KITS[i].id}`).checked = true; $('#plateMark').innerHTML = markSVG(i).replace(/^<svg[^>]*>|<\/svg>$/g, '');
+    bindSettings(); plan(); closeReview();
+  }
+  function setMode(m){
+    st.mode = m; $('#modeNew').classList.toggle('on', m === 'new'); $('#modeOld').classList.toggle('on', m === 'old');
+    $('#modeNew').setAttribute('aria-selected', m === 'new'); $('#modeOld').setAttribute('aria-selected', m === 'old');
+    $$('.newonly').forEach(e => e.hidden = m !== 'new'); $$('.oldonly').forEach(e => e.hidden = m !== 'old');
+    plan(); closeReview();
+  }
+  $('#modeNew').onclick = () => setMode('new'); $('#modeOld').onclick = () => setMode('old');
+  const drop = $('#drop'), fi = $('#img');
+  drop.addEventListener('click', () => fi.click()); drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); fi.click(); } });
+  ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => { const f = e.dataTransfer.files[0]; if (f) readImg(f); });
+  fi.addEventListener('change', () => fi.files[0] && readImg(fi.files[0]));
+  function readImg(f){
+    if (!/^image\/(png|jpeg|webp|gif)$/.test(f.type)) return toast('Use PNG, JPG, WEBP or GIF');
+    if (f.size > 5*1024*1024) return toast('Image is over 5 MB');
+    const r = new FileReader(); r.onload = () => { st.img = r.result; $('#imgPv').style.backgroundImage = `url(${r.result})`; $('#imgPv').textContent = ''; plan(); }; r.readAsDataURL(f);
+  }
+  ['#cName','#cTicker','#cMint'].forEach(s => $(s).addEventListener('input', () => { plan(); closeReview(); }));
+  $('#cTicker').addEventListener('input', e => { const v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,''); if (v !== e.target.value) e.target.value = v; });
+  $('#slip').value = st.slip; $('#slip').addEventListener('input', e => { st.slip = +e.target.value; $('#slipOut').textContent = st.slip + '%'; plan(); });
+  $('#slipOut').textContent = st.slip + '%';
+  // pump.fun curve opens at 30 virtual SOL / 1,073,000,000 virtual tokens
+  const devCost = p => { if (!p) return 0; const tok = p/100*1e9; return 30*tok/(1073e6 - tok)*1.01; };
+  $$('#devbuy button').forEach(b => b.addEventListener('click', () => { st.dev = +b.dataset.p; $$('#devbuy button').forEach(x => x.classList.toggle('on', x === b)); $('#devHint').textContent = st.dev ? `≈ ${devCost(st.dev).toFixed(3)} SOL for ${st.dev}% of supply, at the curve's opening price, fee included.` : 'No developer buy.'; plan(); }));
+  const b58 = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
+  function plan(){
+    const name = $('#cName').value.trim(), tick = $('#cTicker').value.trim(), mint = $('#cMint').value.trim();
+    if (st.mode === 'new'){
+      $('#pName').textContent = name || 'Untitled'; $('#pTicker').textContent = '$' + (tick || 'TICKER');
+      $('#pPv').style.backgroundImage = st.img ? `url(${st.img})` : 'none';
+    } else {
+      $('#pName').textContent = mint ? 'Existing coin' : 'No coin yet'; $('#pTicker').textContent = mint ? mint.slice(0,6) + '…' + mint.slice(-6) : 'Paste a mint address';
+      $('#pPv').style.backgroundImage = 'none';
+      $('#cMint').classList.toggle('bad', !!mint && !b58.test(mint));
+    }
+    const k = st.kit, rows = [['Kit', `<i></i>${KITS[k].name}`, 'kitv']];
+    if (k === 1) rows.push(['Floor', `${st.dist || '—'}% under high`]);
+    if (k === 0 || k === 3) rows.push(['Spend above', SOL(st.spend || 0)]);
+    if (k !== 2) rows.push(['Max per crank', SOL(st.cap)]);
+    if (k === 2) rows.push(['Payout', 'Hourly · weighted']);
+    rows.push(['Slippage', st.slip + '%'], ['Quote','SOL']);
+    if (st.mode === 'new') rows.push(['Developer buy', st.dev ? `${st.dev}% · ≈${devCost(st.dev).toFixed(3)} SOL` : 'None']);
+    rows.push(['Lock','Permanent']);
+    $('#pRows').innerHTML = rows.map(([a,b,c]) => `<dt>${a}</dt><dd class="${c||''}">${b}</dd>`).join('');
+  }
+  function problems(){
+    const out = [];
+    if (st.mode === 'new'){
+      if (!st.img) out.push('Add a coin image.');
+      if (!$('#cName').value.trim()) out.push('Add a name.');
+      if (!$('#cTicker').value.trim()) out.push('Add a ticker.');
+    } else if (!b58.test($('#cMint').value.trim())) out.push('Paste a valid mint address.');
+    if (st.kit === 1){ const d = parseFloat(st.dist); if (!(d >= 5 && d <= 50)) out.push('Set the floor distance between 5% and 50%.'); }
+    if (st.kit === 0 || st.kit === 3){ const s = parseFloat(st.spend); if (!(s >= 0)) out.push('Set a spend threshold in SOL.'); }
+    if (st.cap !== '' && !(parseFloat(st.cap) > 0)) out.push('Max per crank must be above 0, or empty.');
+    return out;
+  }
+  function closeReview(){ $('#review').hidden = true; $('#goBtn').hidden = false; $('#ack').checked = false; $('#signBtn').disabled = true; $('#msg').textContent = ''; $('#msg').classList.remove('err'); }
+  $('#goBtn').addEventListener('click', () => {
+    const p = problems();
+    $('#review').hidden = false; $('#msg').classList.toggle('err', !!p.length);
+    $('#ackRow').hidden = !!p.length; $('#signBtn').hidden = !!p.length;
+    if (p.length){ $('#msg').textContent = p.join(' '); return; }
+    $('#goBtn').hidden = true; $('#msg').textContent = '';
+  });
+  $('#ack').addEventListener('change', e => $('#signBtn').disabled = !e.target.checked);
+  $('#signBtn').addEventListener('click', () => {
+    try { localStorage.setItem('telos-plan', JSON.stringify({ kit:st.kit, slip:st.slip })); } catch(e){}
+    if (!TELOS.programLive){ $('#msg').classList.remove('err'); $('#msg').textContent = 'Signing opens when the TELOS program goes live on mainnet. Your kit choice is saved in this browser.'; return; }
+    $('#msg').textContent = 'Opening your wallet…';
+  });
+  setMode('new'); setKit(st.kit);
+})();
+
+/* ---------------- docs toc ---------------- */
+(function(){
+  const links = $$('#toc a');
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a.dataset.doc === e.target.id)); }), { rootMargin:'-20% 0px -70% 0px' });
+  $$('.doc section').forEach(s => io.observe(s));
+})();
+
+route();
+window.__s = () => Stage && Stage.snap();
+</script>
+
+</body>
+</html>
