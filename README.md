@@ -5,7 +5,7 @@ three.js (r128) loads from cdnjs and its post-processing files from jsDelivr; fo
 
 ## Set at launch
 Open `index.html`, find `const TELOS = {` near the top of the script and fill in:
-- `ca` – the $TELOS contract address (already set: 9TzvCF4fWu6yHPvDygRGJx5QgZVzYTcaZmMPdnGopump)
+- `ca` – the $TELOS contract address (already set: Di7cS7BkNWQVvMaMq52tTao3qHDzsMRLxYAtNZVXpump)
 - `x` – your X profile URL
 - `pumpfun` – the pump.fun coin URL (already set)
 - `github` – program repo, if public
